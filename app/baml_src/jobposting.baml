@@ -14,6 +14,9 @@ class JobPosting {
   roles string[] @description(#"
     List the roles and responsibilities associated with the job focusing on the outcomes and deliverables expected from the role.
   "#)
+	recruiter_details RecruiterDetails @description(#"
+		If the job posting includes contact information for a recruiter or recruiting agency, extract the details here. If not mentioned return "Not specified" for each field.
+	"#)
 }
 
 class CompetenciesAndSkills {
@@ -30,15 +33,15 @@ class CompetenciesAndSkills {
 
 class LanguageSkills {
   english_level string @description(#"
-    Look for specific references to the english level in the job posting, if not mentioned return "Not specified". Only use C2 if explicitly stated in the job posting or if it says that is require a Native level.
+    Look for specific references to the english level in the job posting, if not mentioned and make return "Not specified". Only use C2 if explicitly stated in the job posting or if it says that is require a Native level.
     A1, A2, B1, B2, C1, C2
     "#)
   german_level string @description(#"
     Look for specific references to the german level in the job posting, if not mentioned return "Not specified". Only use C2 if explicitly stated in the job posting or if it says that is require a Native level.
     A1, A2, B1, B2, C1, C2
     "#)
-  other_languages map<string, string> @description(#"
-    Mention other languages that are required or preferred for the job along with their proficiency levels if specified.
+  languages string @description(#"
+    Mention the languages that are required or preferred for the job along with their proficiency levels if specified. If no languages are mentioned return the name of the language used in the scrapped posting.
     "#)
 }
 
@@ -56,19 +59,30 @@ class ContractDetails {
     Remote, On-site, Hybrid
     "#)
 }
+class RecruiterDetails {
+  name string @description(#"
+    Name of the recruiter or recruiting agency.
+    "#)
+  email string @description(#"
+    Email address of the recruiter or recruiting agency.
+    "#)
+  phone string @description(#"
+    Phone number of the recruiter or recruiting agency.
+    "#)
+}
 
 // Function to extract job posting details from a string.
 function ExtractJobPosting(posting: string) -> JobPosting {
     client "openai/gpt-4o" // Set OPEN
     prompt #"
-    Extract from the following scraped job posting from a website using Crawl4AI and output as marked down. 
+    Extract from the following scraped job posting from a website using Crawl4AI and output as marked down.
     If the text is in another language than English, translate it to English first.
     Always write the output in English:
         {{ posting }}
 
         {{ ctx.output_format }}
     "#
-} 
+}
 
 // Test the function with a sample job posting. Open the VSCode playground to run this.
 test sample_job_posting_no_language_skills {
@@ -119,12 +133,12 @@ Das Team MAIC (Mobile & Artificial Intelligence Campus) ist vom operativen Gesch
 * * *
 #### Das macht uns bei CEWE aus:
 Flexibilität & Work-Life-Balance: Flexible Arbeitszeitmodelle, mobiles Arbeiten bis zu 60% (positionsabhängig) sowie 30 Urlaubstage
-Finanzielle Benefits: Betriebliche Altersvorsorge, Mitarbeiteraktienprogramm, Mitarbeiterrabatte etc. 
-Umfangreiche Weiterentwicklungsmöglichkeiten: Vielseitige Angebote aus Seminaren, Trainings und individuellen Entwicklungsmöglichkeiten, um beruflich und persönlich zu wachsen 
-Innovative & offene Unternehmenskultur mit jeder Menge Teamspirit: Wir bieten ein strukturiertes Onboarding sowie jährliche Highlights wie beispielsweise unser Sommerfest 
-Vielfalt & Verantwortung: Wir setzen auf Diversity, Inklusion und Nachhaltigkeit 
-Familienfreundlicher Arbeitgeber: Tagesbetreuung "cewelino" und Ferienbetreuungsprogramme direkt am Standort 
-Vielfältige Gesundheitsangebote: Hansefit, Fahrradleasing, psychosoziale Beratung, mobile Massagen und vieles mehr 
+Finanzielle Benefits: Betriebliche Altersvorsorge, Mitarbeiteraktienprogramm, Mitarbeiterrabatte etc.
+Umfangreiche Weiterentwicklungsmöglichkeiten: Vielseitige Angebote aus Seminaren, Trainings und individuellen Entwicklungsmöglichkeiten, um beruflich und persönlich zu wachsen
+Innovative & offene Unternehmenskultur mit jeder Menge Teamspirit: Wir bieten ein strukturiertes Onboarding sowie jährliche Highlights wie beispielsweise unser Sommerfest
+Vielfalt & Verantwortung: Wir setzen auf Diversity, Inklusion und Nachhaltigkeit
+Familienfreundlicher Arbeitgeber: Tagesbetreuung "cewelino" und Ferienbetreuungsprogramme direkt am Standort
+Vielfältige Gesundheitsangebote: Hansefit, Fahrradleasing, psychosoziale Beratung, mobile Massagen und vieles mehr
 Moderne Arbeitsumgebung: Neueste Ausstattung, höhenverstellbare Schreibtische und ein Betriebsrestaurant für die gemeinsame Mittagspause
 * * *
 #### Überzeugt?
@@ -290,8 +304,8 @@ Widerspruchsrechte zu Datenverarbeitungen auf Grundlage von berechtigten Interes
 
     "#
     }
-}    
-  
+}
+
 
 
 
@@ -340,10 +354,10 @@ Für unseren Geschäftsbereich **[Tax& Legal Solutions](https://jobs.pwc.de/de/d
 
 
 ****Deine Benefits****
-**Flexibilität**  
-**Familie**  
-**Sicherheit** – Für deine (finanzielle) Sicherheit haben wir verschiedene Versicherungspakete zusammengestellt (z.B. Auslandskrankenversicherungen oder Unfallversicherungen) sowie eine betriebliche Altersvorsorge. Darüber hinaus gewähren wir dir im Krankheitsfall eine Beihilfe zur Lohnfortzahlung auch über die gesetzliche Frist von 6 Wochen hinaus.  
-**Gesundheit**  
+**Flexibilität**
+**Familie**
+**Sicherheit** – Für deine (finanzielle) Sicherheit haben wir verschiedene Versicherungspakete zusammengestellt (z.B. Auslandskrankenversicherungen oder Unfallversicherungen) sowie eine betriebliche Altersvorsorge. Darüber hinaus gewähren wir dir im Krankheitsfall eine Beihilfe zur Lohnfortzahlung auch über die gesetzliche Frist von 6 Wochen hinaus.
+**Gesundheit**
 **Das ist noch nicht alles** – Wir möchten ein positives Arbeitsumfeld schaffen: Ein Umfeld, in dem flexibles und kreatives Arbeiten möglich ist, in dem Arbeit anerkannt und Leistung honoriert wird und auf das wir stolz sind. Alle Benefits findest du auf unserer Karriereseite.
 ****Kontakt****
 Du hast Fragen zu dieser Position oder deiner Bewerbung?
@@ -507,5 +521,4 @@ Widerspruchsrechte zu Datenverarbeitungen auf Grundlage von berechtigten Interes
 
     "#
     }
-}    
-  
+}

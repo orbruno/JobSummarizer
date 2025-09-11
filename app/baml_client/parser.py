@@ -28,12 +28,6 @@ class LlmResponseParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractJobPosting", llm_response=llm_response, mode="request")
         return typing.cast(types.JobPosting, result)
 
-    def ExtractResume(
-        self, llm_response: str, baml_options: BamlCallOptions = {},
-    ) -> types.Resume:
-        result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractResume", llm_response=llm_response, mode="request")
-        return typing.cast(types.Resume, result)
-
     
 
 class LlmStreamParser:
@@ -47,11 +41,5 @@ class LlmStreamParser:
     ) -> stream_types.JobPosting:
         result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractJobPosting", llm_response=llm_response, mode="stream")
         return typing.cast(stream_types.JobPosting, result)
-
-    def ExtractResume(
-        self, llm_response: str, baml_options: BamlCallOptions = {},
-    ) -> stream_types.Resume:
-        result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractResume", llm_response=llm_response, mode="stream")
-        return typing.cast(stream_types.Resume, result)
 
     

@@ -28,8 +28,8 @@ type_map = {
     "types.LanguageSkills": types.LanguageSkills,
     "stream_types.LanguageSkills": stream_types.LanguageSkills,
 
-    "types.Resume": types.Resume,
-    "stream_types.Resume": stream_types.Resume,
+    "types.RecruiterDetails": types.RecruiterDetails,
+    "stream_types.RecruiterDetails": stream_types.RecruiterDetails,
 
 
 }

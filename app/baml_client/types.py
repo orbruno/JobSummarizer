@@ -64,17 +64,17 @@ class JobPosting(BaseModel):
     description: str
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
+    recruiter_details: "RecruiterDetails"
 
 class LanguageSkills(BaseModel):
     english_level: str
     german_level: str
-    other_languages: typing.Dict[str, str]
+    languages: str
 
-class Resume(BaseModel):
+class RecruiterDetails(BaseModel):
     name: str
     email: str
-    experience: typing.List[str]
-    skills: typing.List[str]
+    phone: str
 
 # #########################################################################
 # Generated type aliases (0)

@@ -46,17 +46,17 @@ class JobPosting(BaseModel):
     description: typing.Optional[str] = None
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
+    recruiter_details: typing.Optional["RecruiterDetails"] = None
 
 class LanguageSkills(BaseModel):
     english_level: typing.Optional[str] = None
     german_level: typing.Optional[str] = None
-    other_languages: typing.Dict[str, str]
+    languages: typing.Optional[str] = None
 
-class Resume(BaseModel):
+class RecruiterDetails(BaseModel):
     name: typing.Optional[str] = None
     email: typing.Optional[str] = None
-    experience: typing.List[str]
-    skills: typing.List[str]
+    phone: typing.Optional[str] = None
 
 # #########################################################################
 # Generated type aliases (0)
