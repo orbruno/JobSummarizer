@@ -17,6 +17,18 @@ class JobPosting {
 	recruiter_details RecruiterDetails @description(#"
 		If the job posting includes contact information for a recruiter or recruiting agency, extract the details here. If not mentioned return "Not specified" for each field.
 	"#)
+	posting_date string @description(#"
+		Date when the job was posted which is not the same that the day the the jobpost was scrapped. If not mentioned return "Not specified".
+	"#)
+	application_deadline string @description(#"
+		Deadline for applications if mentioned. If not mentioned return "Not specified".
+	"#)
+	salary_range string @description(#"
+		Salary range if mentioned in the job posting. If not mentioned return "Not specified".
+	"#)
+	benefits string[] @description(#"
+		List any benefits or perks associated with the job if mentioned. If not mentioned return "Not specified".
+	"#)
 }
 
 class CompetenciesAndSkills {
@@ -24,10 +36,10 @@ class CompetenciesAndSkills {
     Write one sentence that specifies the competency as frameworks like ESCO(European Skills, Competences, Qualifications and Occupations) or O*NET.
   "#)
   soft_skills string[] @description(#"
-    List the soft skills associated with the competency. Examples include communication, teamwork, problem-solving, adaptability, time management, leadership, creativity, work ethic, interpersonal skills, conflict resolution, emotional intelligence, attention to detail, and critical thinking.
+    List the soft skills associated with the competency and mentioned on the job posting. Examples include communication, teamwork, problem-solving, adaptability, time management, leadership, creativity, work ethic, interpersonal skills, conflict resolution, emotional intelligence, attention to detail, and critical thinking.
   "#)
   hard_skills string[] @description(#"
-    List the hard skills associated with the competency. Examples include programming languages, specific modules or frameworks, software proficiency specific to the competency making sure that is not too broad that becomes a competency instead of a skill.
+    List the hard skills associated with the competency and mentioned on the job posting. Examples include programming languages, specific modules or frameworks, software proficiency specific to the competency making sure that is not too broad that becomes a competency instead of a skill. Example of hard skills: Python, Java, SQL, AWS, Docker, Kubernetes, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn, Tableau, Power BI, Hadoop, Spark, Hive.
   "#)
 }
 

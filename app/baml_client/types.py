@@ -65,6 +65,10 @@ class JobPosting(BaseModel):
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
     recruiter_details: "RecruiterDetails"
+    posting_date: str
+    application_deadline: str
+    salary_range: str
+    benefits: typing.List[str]
 
 class LanguageSkills(BaseModel):
     english_level: str

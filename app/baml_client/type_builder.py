@@ -167,7 +167,7 @@ class JobPostingAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
         self._bldr = _tb.class_("JobPosting")
-        self._properties: typing.Set[str] = set([  "title",  "company",  "location",  "contract_details",  "language_skills",  "description",  "competencies_and_skills",  "roles",  "recruiter_details",  ])
+        self._properties: typing.Set[str] = set([  "title",  "company",  "location",  "contract_details",  "language_skills",  "description",  "competencies_and_skills",  "roles",  "recruiter_details",  "posting_date",  "application_deadline",  "salary_range",  "benefits",  ])
         self._props = JobPostingProperties(self._bldr, self._properties)
 
     def type(self) -> baml_py.FieldType:
@@ -230,6 +230,22 @@ class JobPostingProperties:
     @property
     def recruiter_details(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("recruiter_details"))
+    
+    @property
+    def posting_date(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("posting_date"))
+    
+    @property
+    def application_deadline(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("application_deadline"))
+    
+    @property
+    def salary_range(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("salary_range"))
+    
+    @property
+    def benefits(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("benefits"))
     
     
 

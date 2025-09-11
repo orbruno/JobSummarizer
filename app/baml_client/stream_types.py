@@ -47,6 +47,10 @@ class JobPosting(BaseModel):
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
     recruiter_details: typing.Optional["RecruiterDetails"] = None
+    posting_date: typing.Optional[str] = None
+    application_deadline: typing.Optional[str] = None
+    salary_range: typing.Optional[str] = None
+    benefits: typing.List[str]
 
 class LanguageSkills(BaseModel):
     english_level: typing.Optional[str] = None
