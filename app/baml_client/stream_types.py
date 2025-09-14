@@ -55,6 +55,7 @@ class JobPosting(BaseModel):
 class LanguageSkills(BaseModel):
     english_level: typing.Optional[str] = None
     german_level: typing.Optional[str] = None
+    language_of_posting: typing.Optional[str] = None
     languages: typing.Optional[str] = None
 
 class RecruiterDetails(BaseModel):

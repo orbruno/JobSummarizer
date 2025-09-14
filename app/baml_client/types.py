@@ -73,6 +73,7 @@ class JobPosting(BaseModel):
 class LanguageSkills(BaseModel):
     english_level: str
     german_level: str
+    language_of_posting: str
     languages: str
 
 class RecruiterDetails(BaseModel):

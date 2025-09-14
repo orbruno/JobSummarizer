@@ -254,7 +254,7 @@ class LanguageSkillsAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
         self._bldr = _tb.class_("LanguageSkills")
-        self._properties: typing.Set[str] = set([  "english_level",  "german_level",  "languages",  ])
+        self._properties: typing.Set[str] = set([  "english_level",  "german_level",  "language_of_posting",  "languages",  ])
         self._props = LanguageSkillsProperties(self._bldr, self._properties)
 
     def type(self) -> baml_py.FieldType:
@@ -289,6 +289,10 @@ class LanguageSkillsProperties:
     @property
     def german_level(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("german_level"))
+    
+    @property
+    def language_of_posting(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("language_of_posting"))
     
     @property
     def languages(self) -> type_builder.ClassPropertyViewer:

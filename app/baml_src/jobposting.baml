@@ -18,7 +18,7 @@ class JobPosting {
 		If the job posting includes contact information for a recruiter or recruiting agency, extract the details here. If not mentioned return "Not specified" for each field.
 	"#)
 	posting_date string @description(#"
-		Date when the job was posted which is not the same that the day the the jobpost was scrapped. If not mentioned return "Not specified".
+		Date when the job was posted which is not the same that the day the the jobpost was scrapped. It has to be specifically mentioned in the post. If not mentioned return "Not specified".
 	"#)
 	application_deadline string @description(#"
 		Deadline for applications if mentioned. If not mentioned return "Not specified".
@@ -52,10 +52,13 @@ class LanguageSkills {
     Look for specific references to the german level in the job posting, if not mentioned return "Not specified". Only use C2 if explicitly stated in the job posting or if it says that is require a Native level.
     A1, A2, B1, B2, C1, C2
     "#)
+  language_of_posting string @description(#"
+    Return the language used in the scrapped posting.
+    "#)
   languages string @description(#"
     Mention the languages that are required or preferred for the job along with their proficiency levels if specified. If no languages are mentioned return the name of the language used in the scrapped posting.
     "#)
-}
+	}
 
 class ContractDetails {
   type string @description(#"
@@ -205,13 +208,13 @@ Medical Check-Up Company Pension Sports Activities Flexible Working Hours Compan
 
 **Grow here. Go further. **
 
-Bist du bereit etwas zu verändern? Willst du mit deinen Stärken echten Mehrwert schaffen? In unserem weltweiten Netzwerk hast du unendlich viele Möglichkeiten, zu wachsen und dich weiterzuentwickeln. 
+Bist du bereit etwas zu verändern? Willst du mit deinen Stärken echten Mehrwert schaffen? In unserem weltweiten Netzwerk hast du unendlich viele Möglichkeiten, zu wachsen und dich weiterzuentwickeln.
 
-Bei PwC Deutschland begleitest du unsere Kunden dabei entscheidende Herausforderungen von heute zu lösen und leistest damit einen Beitrag für unsere Wirtschaft und Gesellschaft. Wir sind Treiber der Transformation und Begleiter in das digitale Zeitalter. In unserem Team kommen die unterschiedlichsten Persönlichkeiten, mit herausragenden innovativen Ideen und einer Leidenschaft auf ihrem Fachgebiet zusammen, um gemeinsam die Zukunft in der Wirtschaftsprüfung Steuer- und Unternehmensberatung zu gestalten. 
+Bei PwC Deutschland begleitest du unsere Kunden dabei entscheidende Herausforderungen von heute zu lösen und leistest damit einen Beitrag für unsere Wirtschaft und Gesellschaft. Wir sind Treiber der Transformation und Begleiter in das digitale Zeitalter. In unserem Team kommen die unterschiedlichsten Persönlichkeiten, mit herausragenden innovativen Ideen und einer Leidenschaft auf ihrem Fachgebiet zusammen, um gemeinsam die Zukunft in der Wirtschaftsprüfung Steuer- und Unternehmensberatung zu gestalten.
 
-Bei uns trifft Expertenwissen, auf höchste Standards von Qualität und Fürsorge. Wir trauen uns Dinge kritisch zu hinterfragen, neue Wege zu gehen und somit jeden Tag aufs neue zu wachsen. 
+Bei uns trifft Expertenwissen, auf höchste Standards von Qualität und Fürsorge. Wir trauen uns Dinge kritisch zu hinterfragen, neue Wege zu gehen und somit jeden Tag aufs neue zu wachsen.
 
-Als Arbeitgeber stellen wir deine Fähigkeiten und individuelle Entwicklung in den Mittelpunkt. Wir schaffen ein Arbeitsumfeld, in dem du dich mit deinem vollen Potenzial entfalten und dein Bestes geben kannst. So schaffen wir es für unsere Kunden einen echten Unterschied zu machen. Wir entdecken verborgene Talente und bauen langfristige Beziehungen auf, die von Vertrauen und Empathie geprägt sind. Wir arbeiten in interdisziplinären und inklusiven Teams zusammen und lernen so jeden Tag von den Besten. 
+Als Arbeitgeber stellen wir deine Fähigkeiten und individuelle Entwicklung in den Mittelpunkt. Wir schaffen ein Arbeitsumfeld, in dem du dich mit deinem vollen Potenzial entfalten und dein Bestes geben kannst. So schaffen wir es für unsere Kunden einen echten Unterschied zu machen. Wir entdecken verborgene Talente und bauen langfristige Beziehungen auf, die von Vertrauen und Empathie geprägt sind. Wir arbeiten in interdisziplinären und inklusiven Teams zusammen und lernen so jeden Tag von den Besten.
 
 **Gemeinsam gestalten wir die Zukunft von morgen. **
 

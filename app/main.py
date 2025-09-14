@@ -23,7 +23,7 @@ def generate_job_json(request: JobRequest):
     async def crawl_and_extract(url):
         async with AsyncWebCrawler() as crawler:
             result = await crawler.arun(url)
-            html_content = result.html_content
+            html_content = result.html
             with tempfile.NamedTemporaryFile(
                 delete=False, suffix=".html", mode="w", encoding="utf-8"
             ) as tmp:
