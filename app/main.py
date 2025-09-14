@@ -5,6 +5,9 @@ import asyncio
 from crawl4ai import AsyncWebCrawler
 from baml_client.sync_client import b
 from baml_client.types import JobPosting
+from docling.document_converter import DocumentConverter
+import tempfile
+
 
 app = FastAPI()
 
@@ -20,8 +23,21 @@ def generate_job_json(request: JobRequest):
     async def crawl_and_extract(url):
         async with AsyncWebCrawler() as crawler:
             result = await crawler.arun(url)
-            html = result.markdown
-            return b.ExtractJobPosting(html)
+            html_content = result.html_content
+            with tempfile.NamedTemporaryFile(
+                delete=False, suffix=".html", mode="w", encoding="utf-8"
+            ) as tmp:
+                tmp.write(html_content)
+                tmp_path = tmp.name
+
+            converter = DocumentConverter()
+            result_docling = converter.convert(
+                tmp_path
+            )  # Pass the file path, not the string
+            doc_docling = result_docling.document
+            job_post_md = doc_docling.export_to_markdown()
+
+            return b.ExtractJobPosting(job_post_md)
 
     try:
         job_posting = asyncio.run(crawl_and_extract(request.url))
