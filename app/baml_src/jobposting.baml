@@ -6,10 +6,10 @@ class JobPosting {
   contract_details ContractDetails
   language_skills LanguageSkills
   description string @description(#"
-    Write in one paragraph a summary of the job description. This will not be a comprehensive summary but a very short one that captures the essence of the job.
+    Write in one paragraph a summary of the job description. This will not be a comprehensive summary but a very short one that captures the essence of the job. Make sure to include any mention of GenAI use if applicable.
   "#)
   competencies_and_skills CompetenciesAndSkills[] @description(#"
-    List the competencies and skills required or preferred for the job.
+    List of one or more competencies and skills required or preferred for the job as detailed in the job posting. Each competency should include the competency name, associated soft skills, and hard skills.
   "#)
   roles string[] @description(#"
     List the roles and responsibilities associated with the job focusing on the outcomes and deliverables expected from the role.
@@ -33,14 +33,14 @@ class JobPosting {
 
 class CompetenciesAndSkills {
   competency string @description(#"
-    Write one sentence that specifies the competency as frameworks like ESCO(European Skills, Competences, Qualifications and Occupations) or O*NET.
+    Write one competency base on frameworks like ESCO(European Skills, Competences, Qualifications and Occupations) or O*NET. You have to choose the most relevant competencies that captures the essence of the job posting. Examples of competencies include Data Analysis, Machine Learning, Software Development, Project Management, Cloud Computing, Cybersecurity, DevOps, Business Intelligence, Data Engineering, Natural Language Processing, Computer Vision, Big Data Technologies, Statistical Analysis, Data Visualization, Database Management, AI Ethics and Governance, GenAI.
   "#)
   soft_skills string[] @description(#"
-    List the soft skills associated with the competency and mentioned on the job posting. Examples include communication, teamwork, problem-solving, adaptability, time management, leadership, creativity, work ethic, interpersonal skills, conflict resolution, emotional intelligence, attention to detail, and critical thinking.
+    List the soft skills associated with the competency and mentioned on the job posting. Examples include communication, teamwork, problem-solving, adaptability, time management, leadership, creativity, work ethic, interpersonal skills, conflict resolution, emotional intelligence, attention to detail, and critical thinking. If there is no clear mention of soft skills related to the competency return "Not specified".
   "#)
   hard_skills string[] @description(#"
-    List the hard skills associated with the competency and mentioned on the job posting. Examples include programming languages, specific modules or frameworks, software proficiency specific to the competency making sure that is not too broad that becomes a competency instead of a skill. Example of hard skills: Python, Java, SQL, AWS, Docker, Kubernetes, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn, Tableau, Power BI, Hadoop, Spark, Hive.
-  "#)
+    List the hard skills associated with the competency and mentioned on the job posting. Examples include programming languages, specific modules or frameworks, software proficiency specific to the competency making sure that is not too broad that becomes a competency instead of a skill. Example of hard skills: Python, Java, SQL, AWS, Docker, Kubernetes, TensorFlow, PyTorch, Scikit-learn, Pandas, NumPy, Matplotlib, Seaborn, Tableau, Power BI, Hadoop, Spark, Hive. You must indicate in parenthesis if the skill is required or preferred. Pay special attention to skills related to GenAI like LangChain, AutoGen, HuggingFace, PyTorch, LLMs, Vectordatabases, Embedding models.
+		"#)
 }
 
 class LanguageSkills {
@@ -90,6 +90,10 @@ class RecruiterDetails {
 function ExtractJobPosting(posting: string) -> JobPosting {
     client "openai/gpt-4o" // Set OPEN
     prompt #"
+		{{ _.role("system") }}
+		You are an expert career consultant specialized in IT.  Your job is to analize job postings and extract relevant information to help job seekers understand the requirements and expectations of the role. The results are also going to be used to match job seekers with suitable job opportunities based on their skills and experiences using another agent later.
+
+		{{ _.role("user")}}
     Extract from the following scraped job posting from a website using Crawl4AI and output as marked down.
     If the text is in another language than English, translate it to English first.
     Always write the output in English:
