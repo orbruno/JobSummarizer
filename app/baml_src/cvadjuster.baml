@@ -24,7 +24,7 @@ A list of hard skills or technical skills relevant to the competency that the co
 
 class JobPosition {
   title string @description(#"
-The title of the job position held by the individual. Rewritten to better match the job title being applied for but still reflecting the actual role and avoiding exaggeration or misrepresentation. Return only one title that best fits the job description being applied for but if necessary, use job responsibilities of other positions that still are relevant to the job description.
+The title of the job position held by the individual. Choose the title from the possibilities given it to match the job title being applied but don't just reuse the same job title of the posting or lie about the actual role. Return only one title that best fits the job description being applied for but if necessary, use job responsibilities of other positions that still are relevant to the job description.
   "#)
   description string @description(#"
 A rewritten brief description of the job position and its responsibilities to better align with the job description being applied for, while still accurately reflecting the actual duties performed.
@@ -35,7 +35,7 @@ A list of rewritten responsibilities for the job position that better align with
 }
 
 // Function to adjust a resume based on job description, responsibilities, and required competencies and skills.
-function AdjustResume(job_title: string, job_description:string, job_responsibilities: string[], competencies_and_skills: Competency[], employmentRecord: EmploymentRecord) -> EmploymentRecord {
+function AdjustResume(job_title: string, job_description:string, job_responsibilities: string[], competencies_and_skills: Competency[], employmentRecord: EmploymentRecord, property_job_titles: string[]) -> EmploymentRecord {
 
   client "openai/gpt-4o"
   prompt #"
@@ -65,6 +65,8 @@ function AdjustResume(job_title: string, job_description:string, job_responsibil
     {{ _.role("user")}}
     Here is the candidate's specific experience for the employer {{ employmentRecord.employer }}:
     ### Employer Description: {{ employmentRecord.description }}
+		The possibilities for job titles are: {{ property_job_titles | join(", ") }}.
+		In this roles employeer use the following competencies and skills:
     ### Positions:
       {% for position in employmentRecord.positions %}
     ---

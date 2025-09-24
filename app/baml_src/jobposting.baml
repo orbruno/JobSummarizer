@@ -1,10 +1,14 @@
 //Define data model for job postings.
 class JobPosting {
   title string
-  company string
-  location string
+  company string @description(#"
+		Name of the company or organization offering the job. If the Company uses an acronym, you **must** put the name in parentheses. If the company is a sub institute or branch of a larger organization, use the name of the branch or sub institute.
+	"#)
+  location string @description(#"
+		Location of the job. If multiple locations are mentioned, list them all separated by commas. If the job is remote, indicate that as well. The location must be cities and not countries or regions.
+	"#)
   contract_details ContractDetails
-  language_skills LanguageSkills
+  language_skills LanguageSkills[]
   description string @description(#"
     Write in one paragraph a summary of the job description. This will not be a comprehensive summary but a very short one that captures the essence of the job. Make sure to include any mention of GenAI use if applicable.
   "#)

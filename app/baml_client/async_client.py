@@ -76,6 +76,21 @@ class BamlAsyncClient:
     def parse_stream(self):
       return self.__llm_stream_parser
     
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecord,property_job_titles: typing.List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> types.EmploymentRecord:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.AdjustResume(job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,competencies_and_skills=competencies_and_skills,employmentRecord=employmentRecord,property_job_titles=property_job_titles,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="AdjustResume", args={
+                "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,"property_job_titles": property_job_titles,
+            })
+            return typing.cast(types.EmploymentRecord, result.cast_to(types, types, stream_types, False, __runtime__))
     async def ExtractJobPosting(self, posting: str,
         baml_options: BamlCallOptions = {},
     ) -> types.JobPosting:
@@ -100,6 +115,18 @@ class BamlStreamClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecord,property_job_titles: typing.List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[stream_types.EmploymentRecord, types.EmploymentRecord]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="AdjustResume", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,"property_job_titles": property_job_titles,
+        })
+        return baml_py.BamlStream[stream_types.EmploymentRecord, types.EmploymentRecord](
+          result,
+          lambda x: typing.cast(stream_types.EmploymentRecord, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(types.EmploymentRecord, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     def ExtractJobPosting(self, posting: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[stream_types.JobPosting, types.JobPosting]:
@@ -120,6 +147,13 @@ class BamlHttpRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecord,property_job_titles: typing.List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AdjustResume", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,"property_job_titles": property_job_titles,
+        }, mode="request")
+        return result
     async def ExtractJobPosting(self, posting: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
@@ -135,6 +169,13 @@ class BamlHttpStreamRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecord,property_job_titles: typing.List[str],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AdjustResume", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,"property_job_titles": property_job_titles,
+        }, mode="stream")
+        return result
     async def ExtractJobPosting(self, posting: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:

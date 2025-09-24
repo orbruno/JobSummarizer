@@ -1,6 +1,4 @@
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, Field
-from typing import List, Optional
 import nest_asyncio
 import asyncio
 from crawl4ai import AsyncWebCrawler
@@ -9,39 +7,10 @@ from baml_client.types import JobPosting
 from docling.document_converter import DocumentConverter
 import tempfile
 
+# Import models from the new models directory
+from .models import JobRequest, AdjustResumeRequest
 
 app = FastAPI()
-
-
-class JobRequest(BaseModel):
-    url: str
-
-
-# Models for AdjustResume
-class JobPositionModel(BaseModel):
-    title: str
-    description: str
-    responsibilities: List[str]
-
-
-class EmploymentRecordModel(BaseModel):
-    employer: str
-    description: str
-    positions: List[JobPositionModel]
-
-
-class CompetencyModel(BaseModel):
-    competency: str
-    soft_skills: List[str]
-    hard_skills: List[str]
-
-
-class AdjustResumeRequest(BaseModel):
-    job_title: str
-    job_description: str
-    job_responsibilities: List[str]
-    competencies_and_skills: List[CompetencyModel]
-    employmentRecord: EmploymentRecordModel
 
 
 @app.post("/generate-job-json")
@@ -59,9 +28,7 @@ def generate_job_json(request: JobRequest):
                 tmp_path = tmp.name
 
             converter = DocumentConverter()
-            result_docling = converter.convert(
-                tmp_path
-            )  # Pass the file path, not the string
+            result_docling = converter.convert(tmp_path)
             doc_docling = result_docling.document
             job_post_md = doc_docling.export_to_markdown()
 
@@ -76,7 +43,7 @@ def generate_job_json(request: JobRequest):
     return job_posting
 
 
-# New endpoint for AdjustResume
+# Endpoint for AdjustResume
 @app.post("/adjust-resume")
 def adjust_resume(request: AdjustResumeRequest):
     try:
@@ -84,7 +51,7 @@ def adjust_resume(request: AdjustResumeRequest):
             job_title=request.job_title,
             job_description=request.job_description,
             job_responsibilities=request.job_responsibilities,
-            competencies_and_skills=[
+            competencies_and_skills=[ # type: ignore
                 {
                     "competency": c.competency,
                     "soft_skills": c.soft_skills,
@@ -92,16 +59,17 @@ def adjust_resume(request: AdjustResumeRequest):
                 }
                 for c in request.competencies_and_skills
             ],
-            employmentRecord={
-                "employer": request.employmentRecord.employer,
-                "description": request.employmentRecord.description,
+            property_job_titles=request.employmentRecord.property_job_titles,
+            employmentRecord={ # type: ignore
+                "employer": request.employmentRecord.property_company,
+                "description": request.employmentRecord.property_company_description,
                 "positions": [
                     {
-                        "title": p.title,
-                        "description": p.description,
-                        "responsibilities": p.responsibilities,
+                        "title": exp.role.replace(':', '').strip(),
+                        "description": f"{exp.role.replace(':', '').strip()} at {request.employmentRecord.property_company}",
+                        "responsibilities": exp.responsabilities,
                     }
-                    for p in request.employmentRecord.positions
+                    for exp in request.employmentRecord.experiences
                 ],
             },
         )

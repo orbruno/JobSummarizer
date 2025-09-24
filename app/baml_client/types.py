@@ -41,10 +41,15 @@ def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
 # #########################################################################
 
 # #########################################################################
-# Generated classes (5)
+# Generated classes (8)
 # #########################################################################
 
 class CompetenciesAndSkills(BaseModel):
+    competency: str
+    soft_skills: typing.List[str]
+    hard_skills: typing.List[str]
+
+class Competency(BaseModel):
     competency: str
     soft_skills: typing.List[str]
     hard_skills: typing.List[str]
@@ -55,12 +60,22 @@ class ContractDetails(BaseModel):
     time_commitment: str
     work_mode: str
 
+class EmploymentRecord(BaseModel):
+    employer: str
+    description: str
+    positions: typing.List["JobPosition"]
+
+class JobPosition(BaseModel):
+    title: str
+    description: str
+    responsibilities: typing.List[str]
+
 class JobPosting(BaseModel):
     title: str
     company: str
     location: str
     contract_details: "ContractDetails"
-    language_skills: "LanguageSkills"
+    language_skills: typing.List["LanguageSkills"]
     description: str
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]

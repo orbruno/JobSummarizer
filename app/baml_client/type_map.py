@@ -19,8 +19,17 @@ type_map = {
     "types.CompetenciesAndSkills": types.CompetenciesAndSkills,
     "stream_types.CompetenciesAndSkills": stream_types.CompetenciesAndSkills,
 
+    "types.Competency": types.Competency,
+    "stream_types.Competency": stream_types.Competency,
+
     "types.ContractDetails": types.ContractDetails,
     "stream_types.ContractDetails": stream_types.ContractDetails,
+
+    "types.EmploymentRecord": types.EmploymentRecord,
+    "stream_types.EmploymentRecord": stream_types.EmploymentRecord,
+
+    "types.JobPosition": types.JobPosition,
+    "stream_types.JobPosition": stream_types.JobPosition,
 
     "types.JobPosting": types.JobPosting,
     "stream_types.JobPosting": stream_types.JobPosting,

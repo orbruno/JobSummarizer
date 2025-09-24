@@ -23,10 +23,15 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
     value: StreamStateValueT
     state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
-# Generated classes (5)
+# Generated classes (8)
 # #########################################################################
 
 class CompetenciesAndSkills(BaseModel):
+    competency: typing.Optional[str] = None
+    soft_skills: typing.List[str]
+    hard_skills: typing.List[str]
+
+class Competency(BaseModel):
     competency: typing.Optional[str] = None
     soft_skills: typing.List[str]
     hard_skills: typing.List[str]
@@ -37,12 +42,22 @@ class ContractDetails(BaseModel):
     time_commitment: typing.Optional[str] = None
     work_mode: typing.Optional[str] = None
 
+class EmploymentRecord(BaseModel):
+    employer: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    positions: typing.List["JobPosition"]
+
+class JobPosition(BaseModel):
+    title: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    responsibilities: typing.List[str]
+
 class JobPosting(BaseModel):
     title: typing.Optional[str] = None
     company: typing.Optional[str] = None
     location: typing.Optional[str] = None
     contract_details: typing.Optional["ContractDetails"] = None
-    language_skills: typing.Optional["LanguageSkills"] = None
+    language_skills: typing.List["LanguageSkills"]
     description: typing.Optional[str] = None
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
