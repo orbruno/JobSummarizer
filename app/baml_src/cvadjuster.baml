@@ -9,7 +9,41 @@ A brief description of what is the company or organization does or its main acti
   positions JobPosition[] @description(#"
 A list of job positions held by the individual at the employer, each with its own title, description, and responsibilities.
   "#)
+	match_explanation string? @description(#""
+A brief explanation of how well the adjusted resume aligns with the job description and responsibilities, highlighting key areas of fit or gaps. This explanation should be used in the further match index evaluation that describes how well the adjusted resume experience matches the job description.
+	"#)
+	match_index int? @description(#""
+Return an integer value from 1 to 7 indicating how well the adjusted resume matches the given job description:
+
+1 = Very poor match
+
+2 = Poor match
+
+3 = Fair match
+
+4 = Good match
+
+5 = Very good match
+
+6 = Excellent match
+
+7 = Perfect match
+
+Evaluation criteria:
+
+Job alignment – Compare job titles, descriptions, responsibilities, competencies, and skills in the resume with those in the job description.
+
+Experience similarity – The closer the resume content is to the job responsibilities, the higher the score. Significant differences or gaps should reduce the score.
+
+Industry/sector match – If the employer’s industry is different but experience otherwise aligns well, reduce the score by 1 point (match_index adjustment).
+
+Final score – Use the adjusted value (match_index) as the output.
+
+Output:
+Provide only the final integer (1–7), representing the match_index.
+ "#)
 }
+
 class Competency {
   competency string @description(#"
 The specific competency specified similar to the specifications of frameworks like ESCO or O*NET that the company is looking for in a candidate.
@@ -61,9 +95,13 @@ function AdjustResume(job_title: string, job_description:string, job_responsibil
           {% endfor %}
     {% endfor %}
 
+		{{ ctx.output_format }}
+
+    {{ ChainOfThought() }}
+
 
     {{ _.role("user")}}
-    Here is the candidate's specific experience for the employer {{ employmentRecord.employer }}:
+    Candidate's specific experience for the employer {{ employmentRecord.employer }}:
     ### Employer Description: {{ employmentRecord.description }}
 		The possibilities for job titles are: {{ property_job_titles | join(", ") }}.
 		In this roles employeer use the following competencies and skills:
@@ -78,9 +116,6 @@ function AdjustResume(job_title: string, job_description:string, job_responsibil
       {% endfor %}
 
     {% endfor %}
-
-
-    {{ ctx.output_format }}
   "#
 }
 

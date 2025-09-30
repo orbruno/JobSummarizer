@@ -34,6 +34,12 @@ class LlmResponseParser:
         result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractJobPosting", llm_response=llm_response, mode="request")
         return typing.cast(types.JobPosting, result)
 
+    def WriteProfessionalProfile(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> str:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="WriteProfessionalProfile", llm_response=llm_response, mode="request")
+        return typing.cast(str, result)
+
     
 
 class LlmStreamParser:
@@ -53,5 +59,11 @@ class LlmStreamParser:
     ) -> stream_types.JobPosting:
         result = self.__options.merge_options(baml_options).parse_response(function_name="ExtractJobPosting", llm_response=llm_response, mode="stream")
         return typing.cast(stream_types.JobPosting, result)
+
+    def WriteProfessionalProfile(
+        self, llm_response: str, baml_options: BamlCallOptions = {},
+    ) -> str:
+        result = self.__options.merge_options(baml_options).parse_response(function_name="WriteProfessionalProfile", llm_response=llm_response, mode="stream")
+        return typing.cast(str, result)
 
     

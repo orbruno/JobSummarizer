@@ -9,6 +9,7 @@ import tempfile
 
 # Import models from the new models directory
 from .models import JobRequest, AdjustResumeRequest
+from .models.adapted_cv import AdaptedCVRequest, AdaptedEmployer
 
 app = FastAPI()
 
@@ -76,3 +77,88 @@ def adjust_resume(request: AdjustResumeRequest):
         return result
     except Exception as e:
         raise HTTPException(status_code=400, detail=f"Error adjusting resume: {e}")
+
+
+# Endpoint for WriteProfessionalProfile using adapted CV
+@app.post("/write-professional-profile")
+def write_professional_profile(request: AdaptedCVRequest):
+    try:
+        # Process all employers from the adapted CV
+        all_positions = []
+
+        # Flatten all positions from all employers
+        for employer in request.adapted_cv:
+            for position in employer.positions:
+                all_positions.append({
+                    "title": position.title,
+                    "description": position.description,
+                    "responsibilities": position.responsibilities,
+                    "employer": employer.employer
+                })
+
+        # Use the first employer as the main employment record for the BAML function
+        # (You might want to modify this logic based on your needs)
+        primary_employer = request.adapted_cv[0] if request.adapted_cv else None
+
+        if not primary_employer:
+            raise HTTPException(status_code=400, detail="No employment records found in adapted CV")
+
+        result = b.WriteProfessionalProfile(
+            job_title=request.job_title,
+            job_description=request.job_description,
+            job_responsibilities=request.job_responsibilities,
+            competencies_and_skills=request.competencies_and_skills, # type: ignore
+            employmentRecord={ # type: ignore
+                "employer": primary_employer.employer,
+                "description": primary_employer.description,
+                "property_job_titles": [
+                    {
+                        "title": pos.title,
+                        "description": pos.description,
+                        "responsibilities": pos.responsibilities,
+                    }
+                    for pos in primary_employer.positions
+                ],
+            },
+        )
+        return result
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error writing professional profile: {e}")
+
+
+# New endpoint for WriteComprehensiveProfile using adapted CV
+@app.post("/write-comprehensive-profile")
+def write_comprehensive_profile(request: AdaptedCVRequest):
+    try:
+        # Convert Pydantic models to dictionaries for BAML
+        adapted_cv_data = []
+        for employer in request.adapted_cv:
+            employer_data = {
+                "employer": employer.employer,
+                "description": employer.description,
+                "positions": [
+                    {
+                        "title": pos.title,
+                        "description": pos.description,
+                        "responsibilities": pos.responsibilities
+                    }
+                    for pos in employer.positions
+                ]
+            }
+            adapted_cv_data.append(employer_data)
+
+        result = b.WriteProfessionalProfile(
+            job_title=request.job_title,
+            job_description=request.job_description,
+            job_responsibilities=request.job_responsibilities,
+            competencies_and_skills=request.competencies_and_skills, # type: ignore
+            adaptedCV=adapted_cv_data  # Changed from employmentRecord to adaptedCV
+        )
+
+        # Wrap the string result in a JSON object
+        return {
+            "professional_profile": result,
+            "status": "success"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error writing comprehensive profile: {e}")

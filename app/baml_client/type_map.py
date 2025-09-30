@@ -16,6 +16,12 @@ from . import stream_types
 
 type_map = {
 
+    "types.AdaptedEmployer": types.AdaptedEmployer,
+    "stream_types.AdaptedEmployer": stream_types.AdaptedEmployer,
+
+    "types.AdaptedPosition": types.AdaptedPosition,
+    "stream_types.AdaptedPosition": stream_types.AdaptedPosition,
+
     "types.CompetenciesAndSkills": types.CompetenciesAndSkills,
     "stream_types.CompetenciesAndSkills": stream_types.CompetenciesAndSkills,
 

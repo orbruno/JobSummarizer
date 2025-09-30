@@ -106,6 +106,21 @@ class BamlAsyncClient:
                 "posting": posting,
             })
             return typing.cast(types.JobPosting, result.cast_to(types, types, stream_types, False, __runtime__))
+    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],
+        baml_options: BamlCallOptions = {},
+    ) -> str:
+        # Check if on_tick is provided
+        if 'on_tick' in baml_options:
+            # Use streaming internally when on_tick is provided
+            stream = self.stream.WriteProfessionalProfile(job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,competencies_and_skills=competencies_and_skills,adaptedCV=adaptedCV,
+                baml_options=baml_options)
+            return await stream.get_final_response()
+        else:
+            # Original non-streaming code
+            result = await self.__options.merge_options(baml_options).call_function_async(function_name="WriteProfessionalProfile", args={
+                "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,
+            })
+            return typing.cast(str, result.cast_to(types, types, stream_types, False, __runtime__))
     
 
 
@@ -139,6 +154,18 @@ class BamlStreamClient:
           lambda x: typing.cast(types.JobPosting, x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
+    def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.BamlStream[str, str]:
+        ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="WriteProfessionalProfile", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,
+        })
+        return baml_py.BamlStream[str, str](
+          result,
+          lambda x: typing.cast(str, x.cast_to(types, types, stream_types, True, __runtime__)),
+          lambda x: typing.cast(str, x.cast_to(types, types, stream_types, False, __runtime__)),
+          ctx,
+        )
     
 
 class BamlHttpRequestClient:
@@ -161,6 +188,13 @@ class BamlHttpRequestClient:
             "posting": posting,
         }, mode="request")
         return result
+    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="WriteProfessionalProfile", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,
+        }, mode="request")
+        return result
     
 
 class BamlHttpStreamRequestClient:
@@ -181,6 +215,13 @@ class BamlHttpStreamRequestClient:
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="ExtractJobPosting", args={
             "posting": posting,
+        }, mode="stream")
+        return result
+    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],
+        baml_options: BamlCallOptions = {},
+    ) -> baml_py.baml_py.HTTPRequest:
+        result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="WriteProfessionalProfile", args={
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,
         }, mode="stream")
         return result
     

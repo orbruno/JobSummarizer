@@ -41,8 +41,18 @@ def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
 # #########################################################################
 
 # #########################################################################
-# Generated classes (8)
+# Generated classes (10)
 # #########################################################################
+
+class AdaptedEmployer(BaseModel):
+    employer: str
+    description: str
+    positions: typing.List["AdaptedPosition"]
+
+class AdaptedPosition(BaseModel):
+    title: str
+    description: str
+    responsibilities: typing.List[str]
 
 class CompetenciesAndSkills(BaseModel):
     competency: str
@@ -64,6 +74,8 @@ class EmploymentRecord(BaseModel):
     employer: str
     description: str
     positions: typing.List["JobPosition"]
+    match_explanation: typing.Optional[str] = None
+    match_index: typing.Optional[int] = None
 
 class JobPosition(BaseModel):
     title: str

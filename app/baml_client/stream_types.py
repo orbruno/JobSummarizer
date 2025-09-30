@@ -23,8 +23,18 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
     value: StreamStateValueT
     state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
-# Generated classes (8)
+# Generated classes (10)
 # #########################################################################
+
+class AdaptedEmployer(BaseModel):
+    employer: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    positions: typing.List["AdaptedPosition"]
+
+class AdaptedPosition(BaseModel):
+    title: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    responsibilities: typing.List[str]
 
 class CompetenciesAndSkills(BaseModel):
     competency: typing.Optional[str] = None
@@ -46,6 +56,8 @@ class EmploymentRecord(BaseModel):
     employer: typing.Optional[str] = None
     description: typing.Optional[str] = None
     positions: typing.List["JobPosition"]
+    match_explanation: typing.Optional[str] = None
+    match_index: typing.Optional[int] = None
 
 class JobPosition(BaseModel):
     title: typing.Optional[str] = None
