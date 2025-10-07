@@ -22,6 +22,12 @@ type_map = {
     "types.AdaptedPosition": types.AdaptedPosition,
     "stream_types.AdaptedPosition": stream_types.AdaptedPosition,
 
+    "types.CompanyBrand": types.CompanyBrand,
+    "stream_types.CompanyBrand": stream_types.CompanyBrand,
+
+    "types.CompanyService": types.CompanyService,
+    "stream_types.CompanyService": stream_types.CompanyService,
+
     "types.CompetenciesAndSkills": types.CompetenciesAndSkills,
     "stream_types.CompetenciesAndSkills": stream_types.CompetenciesAndSkills,
 
@@ -34,6 +40,12 @@ type_map = {
     "types.EmploymentRecord": types.EmploymentRecord,
     "stream_types.EmploymentRecord": stream_types.EmploymentRecord,
 
+    "types.EmploymentRecordInput": types.EmploymentRecordInput,
+    "stream_types.EmploymentRecordInput": stream_types.EmploymentRecordInput,
+
+    "types.GoldenCircle": types.GoldenCircle,
+    "stream_types.GoldenCircle": stream_types.GoldenCircle,
+
     "types.JobPosition": types.JobPosition,
     "stream_types.JobPosition": stream_types.JobPosition,
 
@@ -43,8 +55,14 @@ type_map = {
     "types.LanguageSkills": types.LanguageSkills,
     "stream_types.LanguageSkills": stream_types.LanguageSkills,
 
+    "types.ProfileCoverLetterAndEmail": types.ProfileCoverLetterAndEmail,
+    "stream_types.ProfileCoverLetterAndEmail": stream_types.ProfileCoverLetterAndEmail,
+
     "types.RecruiterDetails": types.RecruiterDetails,
     "stream_types.RecruiterDetails": stream_types.RecruiterDetails,
+
+    "types.WritingExample": types.WritingExample,
+    "stream_types.WritingExample": stream_types.WritingExample,
 
 
 }

@@ -23,18 +23,27 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
     value: StreamStateValueT
     state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
-# Generated classes (10)
+# Generated classes (16)
 # #########################################################################
 
 class AdaptedEmployer(BaseModel):
     employer: typing.Optional[str] = None
     description: typing.Optional[str] = None
-    positions: typing.List["AdaptedPosition"]
+    positions: typing.Optional["AdaptedPosition"] = None
 
 class AdaptedPosition(BaseModel):
     title: typing.Optional[str] = None
     description: typing.Optional[str] = None
     responsibilities: typing.List[str]
+
+class CompanyBrand(BaseModel):
+    golden_circle: typing.Optional["GoldenCircle"] = None
+    customer_segments: typing.List[str]
+    writing_examples: typing.List["WritingExample"]
+
+class CompanyService(BaseModel):
+    name: typing.Optional[str] = None
+    description: typing.Optional[str] = None
 
 class CompetenciesAndSkills(BaseModel):
     competency: typing.Optional[str] = None
@@ -55,9 +64,20 @@ class ContractDetails(BaseModel):
 class EmploymentRecord(BaseModel):
     employer: typing.Optional[str] = None
     description: typing.Optional[str] = None
-    positions: typing.List["JobPosition"]
+    position: typing.Optional["JobPosition"] = None
     match_explanation: typing.Optional[str] = None
     match_index: typing.Optional[int] = None
+
+class EmploymentRecordInput(BaseModel):
+    employer: typing.Optional[str] = None
+    description: typing.Optional[str] = None
+    property_job_titles: typing.List[str]
+    positions: typing.List["JobPosition"]
+
+class GoldenCircle(BaseModel):
+    why: typing.Optional[str] = None
+    how: typing.Optional[str] = None
+    what: typing.List["CompanyService"]
 
 class JobPosition(BaseModel):
     title: typing.Optional[str] = None
@@ -85,10 +105,20 @@ class LanguageSkills(BaseModel):
     language_of_posting: typing.Optional[str] = None
     languages: typing.Optional[str] = None
 
+class ProfileCoverLetterAndEmail(BaseModel):
+    professional_profile: typing.Optional[str] = None
+    cover_letter: typing.Optional[str] = None
+    email_body: typing.Optional[str] = None
+
 class RecruiterDetails(BaseModel):
     name: typing.Optional[str] = None
     email: typing.Optional[str] = None
     phone: typing.Optional[str] = None
+
+class WritingExample(BaseModel):
+    style: typing.Optional[str] = None
+    tone: typing.Optional[str] = None
+    example: typing.Optional[str] = None
 
 # #########################################################################
 # Generated type aliases (0)

@@ -41,18 +41,27 @@ def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
 # #########################################################################
 
 # #########################################################################
-# Generated classes (10)
+# Generated classes (16)
 # #########################################################################
 
 class AdaptedEmployer(BaseModel):
     employer: str
     description: str
-    positions: typing.List["AdaptedPosition"]
+    positions: "AdaptedPosition"
 
 class AdaptedPosition(BaseModel):
     title: str
     description: str
     responsibilities: typing.List[str]
+
+class CompanyBrand(BaseModel):
+    golden_circle: "GoldenCircle"
+    customer_segments: typing.List[str]
+    writing_examples: typing.List["WritingExample"]
+
+class CompanyService(BaseModel):
+    name: str
+    description: str
 
 class CompetenciesAndSkills(BaseModel):
     competency: str
@@ -73,9 +82,20 @@ class ContractDetails(BaseModel):
 class EmploymentRecord(BaseModel):
     employer: str
     description: str
-    positions: typing.List["JobPosition"]
+    position: typing.Optional["JobPosition"] = None
     match_explanation: typing.Optional[str] = None
     match_index: typing.Optional[int] = None
+
+class EmploymentRecordInput(BaseModel):
+    employer: str
+    description: str
+    property_job_titles: typing.List[str]
+    positions: typing.List["JobPosition"]
+
+class GoldenCircle(BaseModel):
+    why: str
+    how: str
+    what: typing.List["CompanyService"]
 
 class JobPosition(BaseModel):
     title: str
@@ -103,10 +123,20 @@ class LanguageSkills(BaseModel):
     language_of_posting: str
     languages: str
 
+class ProfileCoverLetterAndEmail(BaseModel):
+    professional_profile: str
+    cover_letter: str
+    email_body: str
+
 class RecruiterDetails(BaseModel):
     name: str
     email: str
     phone: str
+
+class WritingExample(BaseModel):
+    style: str
+    tone: str
+    example: str
 
 # #########################################################################
 # Generated type aliases (0)

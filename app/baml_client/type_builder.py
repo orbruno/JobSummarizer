@@ -20,7 +20,7 @@ from .globals import DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIM
 class TypeBuilder(type_builder.TypeBuilder):
     def __init__(self):
         super().__init__(classes=set(
-          ["AdaptedEmployer","AdaptedPosition","CompetenciesAndSkills","Competency","ContractDetails","EmploymentRecord","JobPosition","JobPosting","LanguageSkills","RecruiterDetails",]
+          ["AdaptedEmployer","AdaptedPosition","CompanyBrand","CompanyService","CompetenciesAndSkills","Competency","ContractDetails","EmploymentRecord","EmploymentRecordInput","GoldenCircle","JobPosition","JobPosting","LanguageSkills","ProfileCoverLetterAndEmail","RecruiterDetails","WritingExample",]
         ), enums=set(
           []
         ), runtime=DO_NOT_USE_DIRECTLY_UNLESS_YOU_KNOW_WHAT_YOURE_DOING_RUNTIME)
@@ -31,7 +31,7 @@ class TypeBuilder(type_builder.TypeBuilder):
 
 
     # #########################################################################
-    # Generated classes 10
+    # Generated classes 16
     # #########################################################################
 
     @property
@@ -41,6 +41,14 @@ class TypeBuilder(type_builder.TypeBuilder):
     @property
     def AdaptedPosition(self) -> "AdaptedPositionViewer":
         return AdaptedPositionViewer(self)
+
+    @property
+    def CompanyBrand(self) -> "CompanyBrandViewer":
+        return CompanyBrandViewer(self)
+
+    @property
+    def CompanyService(self) -> "CompanyServiceViewer":
+        return CompanyServiceViewer(self)
 
     @property
     def CompetenciesAndSkills(self) -> "CompetenciesAndSkillsViewer":
@@ -59,6 +67,14 @@ class TypeBuilder(type_builder.TypeBuilder):
         return EmploymentRecordViewer(self)
 
     @property
+    def EmploymentRecordInput(self) -> "EmploymentRecordInputViewer":
+        return EmploymentRecordInputViewer(self)
+
+    @property
+    def GoldenCircle(self) -> "GoldenCircleViewer":
+        return GoldenCircleViewer(self)
+
+    @property
     def JobPosition(self) -> "JobPositionViewer":
         return JobPositionViewer(self)
 
@@ -71,8 +87,16 @@ class TypeBuilder(type_builder.TypeBuilder):
         return LanguageSkillsViewer(self)
 
     @property
+    def ProfileCoverLetterAndEmail(self) -> "ProfileCoverLetterAndEmailViewer":
+        return ProfileCoverLetterAndEmailViewer(self)
+
+    @property
     def RecruiterDetails(self) -> "RecruiterDetailsViewer":
         return RecruiterDetailsViewer(self)
+
+    @property
+    def WritingExample(self) -> "WritingExampleViewer":
+        return WritingExampleViewer(self)
 
 
 
@@ -82,7 +106,7 @@ class TypeBuilder(type_builder.TypeBuilder):
 
 
 # #########################################################################
-# Generated classes 10
+# Generated classes 16
 # #########################################################################
 
 class AdaptedEmployerAst:
@@ -175,6 +199,96 @@ class AdaptedPositionProperties:
     @property
     def responsibilities(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("responsibilities"))
+    
+    
+
+
+class CompanyBrandAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("CompanyBrand")
+        self._properties: typing.Set[str] = set([  "golden_circle",  "customer_segments",  "writing_examples",  ])
+        self._props = CompanyBrandProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "CompanyBrandProperties":
+        return self._props
+
+
+class CompanyBrandViewer(CompanyBrandAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class CompanyBrandProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def golden_circle(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("golden_circle"))
+    
+    @property
+    def customer_segments(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("customer_segments"))
+    
+    @property
+    def writing_examples(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("writing_examples"))
+    
+    
+
+
+class CompanyServiceAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("CompanyService")
+        self._properties: typing.Set[str] = set([  "name",  "description",  ])
+        self._props = CompanyServiceProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "CompanyServiceProperties":
+        return self._props
+
+
+class CompanyServiceViewer(CompanyServiceAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class CompanyServiceProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def name(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("name"))
+    
+    @property
+    def description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("description"))
     
     
 
@@ -328,7 +442,7 @@ class EmploymentRecordAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
         self._bldr = _tb.class_("EmploymentRecord")
-        self._properties: typing.Set[str] = set([  "employer",  "description",  "positions",  "match_explanation",  "match_index",  ])
+        self._properties: typing.Set[str] = set([  "employer",  "description",  "position",  "match_explanation",  "match_index",  ])
         self._props = EmploymentRecordProperties(self._bldr, self._properties)
 
     def type(self) -> baml_py.FieldType:
@@ -365,8 +479,8 @@ class EmploymentRecordProperties:
         return type_builder.ClassPropertyViewer(self.__bldr.property("description"))
     
     @property
-    def positions(self) -> type_builder.ClassPropertyViewer:
-        return type_builder.ClassPropertyViewer(self.__bldr.property("positions"))
+    def position(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("position"))
     
     @property
     def match_explanation(self) -> type_builder.ClassPropertyViewer:
@@ -375,6 +489,104 @@ class EmploymentRecordProperties:
     @property
     def match_index(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("match_index"))
+    
+    
+
+
+class EmploymentRecordInputAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("EmploymentRecordInput")
+        self._properties: typing.Set[str] = set([  "employer",  "description",  "property_job_titles",  "positions",  ])
+        self._props = EmploymentRecordInputProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "EmploymentRecordInputProperties":
+        return self._props
+
+
+class EmploymentRecordInputViewer(EmploymentRecordInputAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class EmploymentRecordInputProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def employer(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("employer"))
+    
+    @property
+    def description(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("description"))
+    
+    @property
+    def property_job_titles(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("property_job_titles"))
+    
+    @property
+    def positions(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("positions"))
+    
+    
+
+
+class GoldenCircleAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("GoldenCircle")
+        self._properties: typing.Set[str] = set([  "why",  "how",  "what",  ])
+        self._props = GoldenCircleProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "GoldenCircleProperties":
+        return self._props
+
+
+class GoldenCircleViewer(GoldenCircleAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class GoldenCircleProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def why(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("why"))
+    
+    @property
+    def how(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("how"))
+    
+    @property
+    def what(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("what"))
     
     
 
@@ -564,6 +776,53 @@ class LanguageSkillsProperties:
     
 
 
+class ProfileCoverLetterAndEmailAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("ProfileCoverLetterAndEmail")
+        self._properties: typing.Set[str] = set([  "professional_profile",  "cover_letter",  "email_body",  ])
+        self._props = ProfileCoverLetterAndEmailProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "ProfileCoverLetterAndEmailProperties":
+        return self._props
+
+
+class ProfileCoverLetterAndEmailViewer(ProfileCoverLetterAndEmailAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class ProfileCoverLetterAndEmailProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def professional_profile(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("professional_profile"))
+    
+    @property
+    def cover_letter(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("cover_letter"))
+    
+    @property
+    def email_body(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("email_body"))
+    
+    
+
+
 class RecruiterDetailsAst:
     def __init__(self, tb: type_builder.TypeBuilder):
         _tb = tb._tb # type: ignore (we know how to use this private attribute)
@@ -607,6 +866,53 @@ class RecruiterDetailsProperties:
     @property
     def phone(self) -> type_builder.ClassPropertyViewer:
         return type_builder.ClassPropertyViewer(self.__bldr.property("phone"))
+    
+    
+
+
+class WritingExampleAst:
+    def __init__(self, tb: type_builder.TypeBuilder):
+        _tb = tb._tb # type: ignore (we know how to use this private attribute)
+        self._bldr = _tb.class_("WritingExample")
+        self._properties: typing.Set[str] = set([  "style",  "tone",  "example",  ])
+        self._props = WritingExampleProperties(self._bldr, self._properties)
+
+    def type(self) -> baml_py.FieldType:
+        return self._bldr.field()
+
+    @property
+    def props(self) -> "WritingExampleProperties":
+        return self._props
+
+
+class WritingExampleViewer(WritingExampleAst):
+    def __init__(self, tb: type_builder.TypeBuilder):
+        super().__init__(tb)
+
+    
+    def list_properties(self) -> typing.List[typing.Tuple[str, type_builder.ClassPropertyViewer]]:
+        return [(name, type_builder.ClassPropertyViewer(self._bldr.property(name))) for name in self._properties]
+    
+
+
+class WritingExampleProperties:
+    def __init__(self, bldr: baml_py.ClassBuilder, properties: typing.Set[str]):
+        self.__bldr = bldr
+        self.__properties = properties # type: ignore (we know how to use this private attribute) # noqa: F821
+
+    
+    
+    @property
+    def style(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("style"))
+    
+    @property
+    def tone(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("tone"))
+    
+    @property
+    def example(self) -> type_builder.ClassPropertyViewer:
+        return type_builder.ClassPropertyViewer(self.__bldr.property("example"))
     
     
 

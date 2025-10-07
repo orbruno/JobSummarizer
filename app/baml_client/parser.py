@@ -36,9 +36,9 @@ class LlmResponseParser:
 
     def WriteProfessionalProfile(
         self, llm_response: str, baml_options: BamlCallOptions = {},
-    ) -> str:
+    ) -> types.ProfileCoverLetterAndEmail:
         result = self.__options.merge_options(baml_options).parse_response(function_name="WriteProfessionalProfile", llm_response=llm_response, mode="request")
-        return typing.cast(str, result)
+        return typing.cast(types.ProfileCoverLetterAndEmail, result)
 
     
 
@@ -62,8 +62,8 @@ class LlmStreamParser:
 
     def WriteProfessionalProfile(
         self, llm_response: str, baml_options: BamlCallOptions = {},
-    ) -> str:
+    ) -> stream_types.ProfileCoverLetterAndEmail:
         result = self.__options.merge_options(baml_options).parse_response(function_name="WriteProfessionalProfile", llm_response=llm_response, mode="stream")
-        return typing.cast(str, result)
+        return typing.cast(stream_types.ProfileCoverLetterAndEmail, result)
 
     
