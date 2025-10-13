@@ -9,6 +9,9 @@ class TimeSpanModel(BaseModel):
 class ExperienceModel(BaseModel):
     role: str
     responsabilities: List[str]
+    competencies_used: Optional[List[str]] = []
+    technical_proficiencies_used: Optional[List[str]] = []
+
 
 class CompetencyModel(BaseModel):
     competency: str
@@ -22,12 +25,12 @@ class EmploymentRecordNestedModel(BaseModel):
     property_company: str
     notion_jobpage_parent_id: Optional[str] = None
     experiences: List[ExperienceModel]
-    competencies_used: Optional[List[str]] = []
-    technical_proficiencies_used: Optional[List[str]] = []
+
 
 class AdjustResumeRequest(BaseModel):
     job_title: str
     job_description: str
     job_responsibilities: List[str]
+    job_requirements: List[str]
     competencies_and_skills: List[CompetencyModel]
     employmentRecord: EmploymentRecordNestedModel

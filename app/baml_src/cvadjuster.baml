@@ -1,14 +1,21 @@
 
 class JobPosition {
   title string @description(#"
-Return one job title (or a combined title if necessary) previously held by the individual that best aligns with the job being applied for, adapting from relevant past titles or responsibilities without copying the posting’s title or misrepresenting the role; if no relevant experience exists, return the closest position and mark it as (non-relevant).
+The job title (or a combined title if necessary) previously held by the individual that best aligns with the job being applied for, adapting from relevant past titles or responsibilities without copying the posting’s title or misrepresenting the role; if no relevant experience exists, return the closest position and mark it as (non-relevant).
   "#)
   description string @description(#"
 A rewritten brief description of the job position and its responsibilities to better align with the job description being applied for, while still accurately reflecting the actual duties performed.
   "#)
   responsibilities string[] @description(#"
-Return a list of rewritten responsibilities for the job title (or combined title, including roles from different positions held at the same company if relevant) that better align with the responsibilities in the job description, accurately reflecting tasks performed; replace non-relevant technologies with general terms or those in the description, keep and reframe mentioned technologies, and merge similar responsibilities into one encompassing statement.
+Return a list of rewritten responsibilities for the job title (or combined title, including roles from different positions held at the same company if relevant) that better align with the responsibilities in the job description, accurately reflecting tasks performed; explain the skills and competences used in a way that is clear and concise and avoiding using jargon, and merge similar responsibilities into one encompassing statement.
 "#)
+	competencies string[] @description(#"
+A list of competencies (understood as a set of skills, knowledge, and behaviors) that were used in the job position, rewritten to better align with the competencies and skills required in the job description being applied for.
+"#)
+	technical_proficiencies string[] @description(#"
+A list of hard skills or technical skills that were used in the job position, rewritten to better align with the hard skills and technical skills required in the job description being applied for.
+"#)
+
 }
 
 class Competency {
@@ -86,60 +93,78 @@ Final Score:
 }
 
 
-function AdjustResume(job_title: string, job_description:string, job_responsibilities: string[], competencies_and_skills: Competency[], employmentRecord: EmploymentRecordInput) -> EmploymentRecord {
+function AdjustResume(job_title: string, job_description:string, job_responsibilities: string[], job_requirements: string[], competencies_and_skills: Competency[], employmentRecord: EmploymentRecordInput) -> EmploymentRecord {
 
-  client "openai/gpt-4o"
+  client "openai/gpt-4o-mini"
   prompt #"
-    {{ _.role("system") }}
-    You are an expert IT recruiter specializing in data science and AI roles. Your task is to review the job description, responsibilities and required competencies and skill and adjust the provided experienced to better match the job requirements from the following job description. Make sure not to invent any experience or skills that the candidate does not have. You can only rephrase or adjust the existing experience to better align with the job description.
 
-    ## Job title:  {{ job_title }}
-    ### Job Description: {{ job_description }}
-    ### Job Responsibilities:
-    {% for responsibility in job_responsibilities %}
-      - {{ responsibility }}
-    {% endfor %}
-    ### Required Job Competencies and Skills:
-    {% for competency in competencies_and_skills %}
-      - Competency: {{ competency.competency }}
-        - Soft Skills:
-          {% for skill in competency.soft_skills %}
-            - {{ skill }}
-          {% endfor %}
-        - Hard Skills:
-          {% for skill in competency.hard_skills %}
-            - {{ skill }}
-          {% endfor %}
-    {% endfor %}
+	{{ _.role("system") }}
+You are an expert IT recruiter specializing in data science and AI roles. Your task is to review the job description, responsibilities and required competencies and skill and adjust the provided experienced to better match the job requirements from the following job description. Make sure not to invent any experience or skills that the candidate does not have. You can only rephrase or adjust the existing experience to better align with the job description.
 
-    Choose the job title from these options that best fits: {{ employmentRecord.property_job_titles | join(", ") }}.
+## Job title:  {{ job_title }}
+### Job Description: {{ job_description }}
 
-    {{ ctx.output_format }}
 
-    {{ ChainOfThought() }}
+### Job Requirements (what the company is looking for in a candidate):
+{% for requirement in job_requirements %}
+- {{ requirement }}
+{% endfor %}
 
-    {{ _.role("user")}}
-    Analyze and adjust the following resume experience to better match the job description and responsibilities:
+### Job Responsibilities (the main tasks and duties to be performed in this role):
+{% for responsibility in job_responsibilities %}
+- {{ responsibility }}
+{% endfor %}
 
-        ### Company: {{ employmentRecord.employer }}
-      #### Company Description: {{ employmentRecord.description }}
+### Job Competencies and Skills to perform well in this role:
+{% for competency in competencies_and_skills %}
+- Competency: {{ competency.competency }}
+	- Soft Skills:
+		{% for skill in competency.soft_skills %}
+		- {{ skill }}
+		{% endfor %}
+	- Hard Skills:
+		{% for skill in competency.hard_skills %}
+			- {{ skill }}
+		{% endfor %}
+  {% endfor %}
 
-    #### Available Job Title Options:
-    {% for title in employmentRecord.property_job_titles %}
-      - {{ title }}
-    {% endfor %}
+!!Important!!: When adjusting the experience, ensure that the the adjusted job experience of the candidate explicitly mentions the hardskills present at any of the possible job experiences and if several titles apply then combine it with  a Backslash (For example: "Co-founder / Data Scientist").
 
-    #### All Positions at this Employer:
-      {% for position in employmentRecord.positions %}
-    ---
-    ##### Title: {{ position.title }}
-    - Description: {{ position.description }}
-    - Responsibilities:
-       {% for responsibility in position.responsibilities %}
-      - {{ responsibility }}
-      {% endfor %}
+{{ ctx.output_format }}
 
-    {% endfor %}
+{{ ChainOfThought() }}
+
+
+{{ _.role("user")}}
+
+Analyze and adjust the following resume experience for the company {{ employmentRecord.employer }} to better match the job description, requirements, responsibilities, competencies and skills specified above.
+
+## Company Description: {{ employmentRecord.description }}
+
+## Available Job Title Options:
+{% for title in employmentRecord.property_job_titles %}
+- {{ title }}
+{% endfor %}
+
+## All Positions at this Employer:
+{% for position in employmentRecord.positions %}
+### Title: {{ position.title }}
+- Description: {{ position.description }}
+- Responsibilities:
+	{% for responsibility in position.responsibilities %}
+  - {{ responsibility }}
+  {% endfor %}
+- Competencies used:
+	{% for competency in position.competencies %}
+	- {{ competency }}
+	{% endfor %}
+- Hard Skills used to perform the job:
+	{% for technical_proficiency in position.technical_proficiencies %}
+	- {{ technical_proficiency }}
+	{% endfor %}
+---
+{% endfor %}
+
   "#
 }
 
@@ -159,6 +184,13 @@ test job_fit {
   "Create scalable data models integrated with analytical products",
   "Develop new functions for combining diverse data sources",
   "Identify and develop long-term processes and standards within data science frameworks"
+  ]
+	job_requirements [
+		"(1) Master's degree in a quantitative field",
+		"(2) Relevant internships or student programs in high-performing, fast-paced environments",
+		"(3) Basic knowledge in PowerPoint, Python, SQL, or similar",
+		"(4) EU citizenship or valid working permit",
+		"(5) Entrepreneurial experience is a plus"
   ]
     competencies_and_skills [
       {
@@ -222,7 +254,22 @@ test job_fit {
               "Orchestrated the user experience strategy by conducting user research and synthesizing findings into intuitive, high-fidelity interfaces in Figma, leading to a 20% uplift in user engagement.",
               "Engineered a responsive and performant website using PHP, JavaScript, HTML5, and CSS3, implementing technical and on-page SEO best practices that resulted in achieving top-3 search engine rankings for multiple key terms.",
               "Architected a sophisticated analytics framework using Google Tag Manager and custom JavaScript event tracking, enabling detailed behavioral analysis that provided the data foundation for product and marketing strategies."
-            ]
+            ],
+						"competencies": [
+							"UX/UI Design",
+							"Web Development",
+							"User Research",
+							"SEO",
+							"Analytics"
+						],
+						"technical_proficiencies": [
+							"Figma",
+							"PHP",
+							"JavaScript",
+							"HTML5",
+							"CSS3",
+							"Google Tag Manager"
+						]
           },
           {
             "title": "Data Engineer/Data Architect",
@@ -233,7 +280,22 @@ test job_fit {
               "Implemented a multi-layered automation and ingestion strategy, selecting the optimal tool for each task:",
               "Built and maintained the core data transformation layer using dbt, developing tested, version-controlled SQL models to create a unified, 360-degree view of customer activity.",
               "Enabled comprehensive business intelligence by providing clean, modeled data to Looker and Metabase, empowering stakeholders with self-service analytics."
-            ]
+            ],
+            "competencies": [
+              "Data Modeling",
+              "ETL Processes",
+              "Data Warehousing",
+              "SQL",
+              "BigQuery"
+            ],
+						"technical_proficiencies": [
+							"dbt",
+							"SQL",
+							"BigQuery",
+							"Google Cloud Storage",
+							"Looker",
+							"Metabase"
+						]
           },
           {
             "title": "Data Scientist",
@@ -243,7 +305,21 @@ test job_fit {
               "Pioneered a neuro-marketing analytics program, designing and executing experiments to derive causal insights from user psychology and behavior, directly informing high-impact A/B tests and CRO (Conversion Rate Optimization) strategy.",
               "Containerized data science workflows using Docker, ensuring complete reproducibility for all analyses and model training environments from development through to production.",
               "Conducted advanced statistical analysis on modeled data from BigQuery, delivering actionable intelligence on customer segmentation and LTV (Lifetime Value) that guided marketing budget allocation."
-            ]
+            ],
+            "competencies": [
+              "Statistical Analysis",
+              "Predictive Modeling",
+              "A/B Testing",
+              "Data Visualization",
+              "BigQuery"
+            ],
+						"technical_proficiencies": [
+							"R",
+							"Bayesian Modeling",
+							"SQL",
+							"Docker",
+							"BigQuery"
+						]
           },
           {
             "title": "AI Engineer / Full-Stack Developer",
@@ -253,7 +329,22 @@ test job_fit {
               "Developed a serverless content pipeline using Supabase Edge Functions to programmatically publish content from Notion directly into the Supabase SSOT, automating the editorial-to-production workflow.",
               "Engineered and deployed an AI-powered applications —including chatbots, report generators, and dashboards—to make internal knowledge accessible service with Docker to ensure a scalable, consistent, and isolated production environment.",
               "Built the integration layer that pushed data from the Supabase SSOT to the live WooCommerce e-commerce site, ensuring consistent and accurate product information for customers."
-            ]
+            ],
+						"competencies": [
+              "AI Integration",
+              "E-commerce Development",
+              "Serverless Architecture",
+              "Docker",
+              "Supabase"
+            ],
+						"technical_proficiencies": [
+							"Supabase",
+							"PostgreSQL",
+							"WooCommerce",
+							"JavaScript",
+							"Node.js",
+							"Docker"
+						]
           },
           {
             "title": "Product Owner",
@@ -265,7 +356,21 @@ test job_fit {
               "Drove end-to-end feature delivery, leading the launch of multiple MVPs (Minimum Viable Products) from user story mapping to analyzing post-release data for rapid iteration.",
               "Mastered cross-functional alignment by managing dependencies between front-end, back-end, and data/AI platform teams, ensuring seamless integration of all technical initiatives into a cohesive user experience.",
               "Championed data-informed decision making, establishing and tracking product KPIs (Key Performance Indicators) to provide transparent progress reports and make evidence-based adjustments to the product backlog."
-            ]
+            ],
+						"competencies": [
+							"Product Strategy",
+							"Agile Methodologies",
+							"User-Centered Design",
+							"Data-Driven Decision Making",
+							"Stakeholder Management"
+						],
+						"technical_proficiencies": [
+							"Jira",
+							"Confluence",
+							"Figma",
+							"Google Analytics",
+							"SQL"
+						]
           },
           {
             "title":  "Cofounder/Project Manager",
@@ -276,7 +381,21 @@ test job_fit {
               "Directed the end-to-end product lifecycle of the Turri.cr eCommerce marketplace, translating user research and Lean Startup principles into a live platform. Implemented Agile practices to guide the development roadmap and ensure continuous value delivery.",
               "Recruited, hired, and led a cross-functional team of 10 students and 4 collaborators across engineering, design, and marketing, fostering a collaborative and values-driven culture focused on a unified mission.",
               "Forged and cultivated key strategic partnerships with local businesses and leading academic institutions, including Osnabrück University and the National University of Costa Rica, to bolster R&D, enhance credibility, and drive community adoption."
-            ]
+            ],
+						"competencies": [
+							"Strategic Planning",
+							"Project Management",
+							"Team Leadership",
+							"Partnership Development",
+							"Agile Methodologies"
+						],
+						"technical_proficiencies": [
+							"Jira",
+							"Confluence",
+							"Google Workspace",
+							"Slack",
+							"Trello"
+						]
           }
         ]
     }

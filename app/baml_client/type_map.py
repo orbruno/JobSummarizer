@@ -34,14 +34,23 @@ type_map = {
     "types.Competency": types.Competency,
     "stream_types.Competency": stream_types.Competency,
 
+    "types.CompetencyAndSkills": types.CompetencyAndSkills,
+    "stream_types.CompetencyAndSkills": stream_types.CompetencyAndSkills,
+
     "types.ContractDetails": types.ContractDetails,
     "stream_types.ContractDetails": stream_types.ContractDetails,
+
+    "types.CoverLetter": types.CoverLetter,
+    "stream_types.CoverLetter": stream_types.CoverLetter,
 
     "types.EmploymentRecord": types.EmploymentRecord,
     "stream_types.EmploymentRecord": stream_types.EmploymentRecord,
 
     "types.EmploymentRecordInput": types.EmploymentRecordInput,
     "stream_types.EmploymentRecordInput": stream_types.EmploymentRecordInput,
+
+    "types.Formation": types.Formation,
+    "stream_types.Formation": stream_types.Formation,
 
     "types.GoldenCircle": types.GoldenCircle,
     "stream_types.GoldenCircle": stream_types.GoldenCircle,
@@ -60,6 +69,9 @@ type_map = {
 
     "types.RecruiterDetails": types.RecruiterDetails,
     "stream_types.RecruiterDetails": stream_types.RecruiterDetails,
+
+    "types.Specialization": types.Specialization,
+    "stream_types.Specialization": stream_types.Specialization,
 
     "types.WritingExample": types.WritingExample,
     "stream_types.WritingExample": stream_types.WritingExample,

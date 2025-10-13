@@ -18,6 +18,9 @@ class JobPosting {
   roles string[] @description(#"
     List the roles and responsibilities associated with the job focusing on the outcomes and deliverables expected from the role.
   "#)
+  requirements string[] @description(#"
+    List the qualifications and skills required for the job. Look for sections like "your profile", "what you bring", "your superpowers", etc. Consider the first items in the list as the most important ones and return an ordered list with the number in parenthesis at the start of each item.
+  "#)
 	recruiter_details RecruiterDetails @description(#"
 		If the job posting includes contact information for a recruiter or recruiting agency, extract the details here. If not mentioned return "Not specified" for each field.
 	"#)
@@ -92,7 +95,7 @@ class RecruiterDetails {
 
 // Function to extract job posting details from a string.
 function ExtractJobPosting(posting: string) -> JobPosting {
-    client "openai/gpt-4o" // Set OPEN
+    client "openai/gpt-4o-mini" // Set OPEN
     prompt #"
 		{{ _.role("system") }}
 		You are an expert career consultant specialized in IT.  Your job is to analize job postings and extract relevant information to help job seekers understand the requirements and expectations of the role. The results are also going to be used to match job seekers with suitable job opportunities based on their skills and experiences using another agent later.

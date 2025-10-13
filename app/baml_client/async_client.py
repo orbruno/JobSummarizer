@@ -76,19 +76,19 @@ class BamlAsyncClient:
     def parse_stream(self):
       return self.__llm_stream_parser
     
-    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],job_requirements: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
         baml_options: BamlCallOptions = {},
     ) -> types.EmploymentRecord:
         # Check if on_tick is provided
         if 'on_tick' in baml_options:
             # Use streaming internally when on_tick is provided
-            stream = self.stream.AdjustResume(job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,competencies_and_skills=competencies_and_skills,employmentRecord=employmentRecord,
+            stream = self.stream.AdjustResume(job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,job_requirements=job_requirements,competencies_and_skills=competencies_and_skills,employmentRecord=employmentRecord,
                 baml_options=baml_options)
             return await stream.get_final_response()
         else:
             # Original non-streaming code
             result = await self.__options.merge_options(baml_options).call_function_async(function_name="AdjustResume", args={
-                "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
+                "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"job_requirements": job_requirements,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
             })
             return typing.cast(types.EmploymentRecord, result.cast_to(types, types, stream_types, False, __runtime__))
     async def ExtractJobPosting(self, posting: str,
@@ -106,19 +106,19 @@ class BamlAsyncClient:
                 "posting": posting,
             })
             return typing.cast(types.JobPosting, result.cast_to(types, types, stream_types, False, __runtime__))
-    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
+    async def WriteProfessionalProfile(self, formations: typing.List["types.Formation"],job_title: str,job_description: str,job_responsibilities: typing.List[str],all_competencies: typing.List[str],all_skills: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
         baml_options: BamlCallOptions = {},
     ) -> types.ProfileCoverLetterAndEmail:
         # Check if on_tick is provided
         if 'on_tick' in baml_options:
             # Use streaming internally when on_tick is provided
-            stream = self.stream.WriteProfessionalProfile(job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,competencies_and_skills=competencies_and_skills,adaptedCV=adaptedCV,company_brand=company_brand,recruiter_name=recruiter_name,
+            stream = self.stream.WriteProfessionalProfile(formations=formations,job_title=job_title,job_description=job_description,job_responsibilities=job_responsibilities,all_competencies=all_competencies,all_skills=all_skills,competencies_and_skills=competencies_and_skills,adaptedCV=adaptedCV,company_brand=company_brand,recruiter_name=recruiter_name,
                 baml_options=baml_options)
             return await stream.get_final_response()
         else:
             # Original non-streaming code
             result = await self.__options.merge_options(baml_options).call_function_async(function_name="WriteProfessionalProfile", args={
-                "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
+                "formations": formations,"job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"all_competencies": all_competencies,"all_skills": all_skills,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
             })
             return typing.cast(types.ProfileCoverLetterAndEmail, result.cast_to(types, types, stream_types, False, __runtime__))
     
@@ -130,11 +130,11 @@ class BamlStreamClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
-    def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
+    def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],job_requirements: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[stream_types.EmploymentRecord, types.EmploymentRecord]:
         ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="AdjustResume", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"job_requirements": job_requirements,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
         })
         return baml_py.BamlStream[stream_types.EmploymentRecord, types.EmploymentRecord](
           result,
@@ -154,11 +154,11 @@ class BamlStreamClient:
           lambda x: typing.cast(types.JobPosting, x.cast_to(types, types, stream_types, False, __runtime__)),
           ctx,
         )
-    def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
+    def WriteProfessionalProfile(self, formations: typing.List["types.Formation"],job_title: str,job_description: str,job_responsibilities: typing.List[str],all_competencies: typing.List[str],all_skills: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.BamlStream[stream_types.ProfileCoverLetterAndEmail, types.ProfileCoverLetterAndEmail]:
         ctx, result = self.__options.merge_options(baml_options).create_async_stream(function_name="WriteProfessionalProfile", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
+            "formations": formations,"job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"all_competencies": all_competencies,"all_skills": all_skills,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
         })
         return baml_py.BamlStream[stream_types.ProfileCoverLetterAndEmail, types.ProfileCoverLetterAndEmail](
           result,
@@ -174,11 +174,11 @@ class BamlHttpRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
-    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],job_requirements: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AdjustResume", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"job_requirements": job_requirements,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
         }, mode="request")
         return result
     async def ExtractJobPosting(self, posting: str,
@@ -188,11 +188,11 @@ class BamlHttpRequestClient:
             "posting": posting,
         }, mode="request")
         return result
-    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
+    async def WriteProfessionalProfile(self, formations: typing.List["types.Formation"],job_title: str,job_description: str,job_responsibilities: typing.List[str],all_competencies: typing.List[str],all_skills: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="WriteProfessionalProfile", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
+            "formations": formations,"job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"all_competencies": all_competencies,"all_skills": all_skills,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
         }, mode="request")
         return result
     
@@ -203,11 +203,11 @@ class BamlHttpStreamRequestClient:
     def __init__(self, options: DoNotUseDirectlyCallManager):
         self.__options = options
 
-    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
+    async def AdjustResume(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],job_requirements: typing.List[str],competencies_and_skills: typing.List["types.Competency"],employmentRecord: types.EmploymentRecordInput,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="AdjustResume", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
+            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"job_requirements": job_requirements,"competencies_and_skills": competencies_and_skills,"employmentRecord": employmentRecord,
         }, mode="stream")
         return result
     async def ExtractJobPosting(self, posting: str,
@@ -217,11 +217,11 @@ class BamlHttpStreamRequestClient:
             "posting": posting,
         }, mode="stream")
         return result
-    async def WriteProfessionalProfile(self, job_title: str,job_description: str,job_responsibilities: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
+    async def WriteProfessionalProfile(self, formations: typing.List["types.Formation"],job_title: str,job_description: str,job_responsibilities: typing.List[str],all_competencies: typing.List[str],all_skills: typing.List[str],competencies_and_skills: typing.List["types.Competency"],adaptedCV: typing.List["types.AdaptedEmployer"],company_brand: types.CompanyBrand,recruiter_name: str,
         baml_options: BamlCallOptions = {},
     ) -> baml_py.baml_py.HTTPRequest:
         result = await self.__options.merge_options(baml_options).create_http_request_async(function_name="WriteProfessionalProfile", args={
-            "job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
+            "formations": formations,"job_title": job_title,"job_description": job_description,"job_responsibilities": job_responsibilities,"all_competencies": all_competencies,"all_skills": all_skills,"competencies_and_skills": competencies_and_skills,"adaptedCV": adaptedCV,"company_brand": company_brand,"recruiter_name": recruiter_name,
         }, mode="stream")
         return result
     

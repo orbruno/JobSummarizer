@@ -41,18 +41,22 @@ def all_succeeded(checks: typing.Dict[CheckName, Check]) -> bool:
 # #########################################################################
 
 # #########################################################################
-# Generated classes (16)
+# Generated classes (20)
 # #########################################################################
 
 class AdaptedEmployer(BaseModel):
     employer: str
     description: str
     positions: "AdaptedPosition"
+    matching_score: str
+    matching_reasons: str
 
 class AdaptedPosition(BaseModel):
     title: str
     description: str
     responsibilities: typing.List[str]
+    competencies: typing.List[str]
+    technical_proficiencies: typing.List[str]
 
 class CompanyBrand(BaseModel):
     golden_circle: "GoldenCircle"
@@ -73,11 +77,23 @@ class Competency(BaseModel):
     soft_skills: typing.List[str]
     hard_skills: typing.List[str]
 
+class CompetencyAndSkills(BaseModel):
+    competency: str
+    skills: typing.List[str]
+
 class ContractDetails(BaseModel):
     type: str
     duration: str
     time_commitment: str
     work_mode: str
+
+class CoverLetter(BaseModel):
+    subject_line: str
+    salutation: str
+    introduction_paragraph: str
+    teaser_paragraph: str
+    contribution_paragraph: str
+    closure_paragraph: str
 
 class EmploymentRecord(BaseModel):
     employer: str
@@ -92,6 +108,12 @@ class EmploymentRecordInput(BaseModel):
     property_job_titles: typing.List[str]
     positions: typing.List["JobPosition"]
 
+class Formation(BaseModel):
+    degree: str
+    institution: str
+    location: str
+    specializations: typing.List["Specialization"]
+
 class GoldenCircle(BaseModel):
     why: str
     how: str
@@ -101,6 +123,8 @@ class JobPosition(BaseModel):
     title: str
     description: str
     responsibilities: typing.List[str]
+    competencies: typing.List[str]
+    technical_proficiencies: typing.List[str]
 
 class JobPosting(BaseModel):
     title: str
@@ -111,6 +135,7 @@ class JobPosting(BaseModel):
     description: str
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
+    requirements: typing.List[str]
     recruiter_details: "RecruiterDetails"
     posting_date: str
     application_deadline: str
@@ -125,13 +150,18 @@ class LanguageSkills(BaseModel):
 
 class ProfileCoverLetterAndEmail(BaseModel):
     professional_profile: str
-    cover_letter: str
     email_body: str
+    competencies_and_skills: typing.List["CompetencyAndSkills"]
+    cover_letter: "CoverLetter"
 
 class RecruiterDetails(BaseModel):
     name: str
     email: str
     phone: str
+
+class Specialization(BaseModel):
+    focus: str
+    description: str
 
 class WritingExample(BaseModel):
     style: str

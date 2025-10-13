@@ -23,18 +23,22 @@ class StreamState(BaseModel, typing.Generic[StreamStateValueT]):
     value: StreamStateValueT
     state: typing_extensions.Literal["Pending", "Incomplete", "Complete"]
 # #########################################################################
-# Generated classes (16)
+# Generated classes (20)
 # #########################################################################
 
 class AdaptedEmployer(BaseModel):
     employer: typing.Optional[str] = None
     description: typing.Optional[str] = None
     positions: typing.Optional["AdaptedPosition"] = None
+    matching_score: typing.Optional[str] = None
+    matching_reasons: typing.Optional[str] = None
 
 class AdaptedPosition(BaseModel):
     title: typing.Optional[str] = None
     description: typing.Optional[str] = None
     responsibilities: typing.List[str]
+    competencies: typing.List[str]
+    technical_proficiencies: typing.List[str]
 
 class CompanyBrand(BaseModel):
     golden_circle: typing.Optional["GoldenCircle"] = None
@@ -55,11 +59,23 @@ class Competency(BaseModel):
     soft_skills: typing.List[str]
     hard_skills: typing.List[str]
 
+class CompetencyAndSkills(BaseModel):
+    competency: typing.Optional[str] = None
+    skills: typing.List[str]
+
 class ContractDetails(BaseModel):
     type: typing.Optional[str] = None
     duration: typing.Optional[str] = None
     time_commitment: typing.Optional[str] = None
     work_mode: typing.Optional[str] = None
+
+class CoverLetter(BaseModel):
+    subject_line: typing.Optional[str] = None
+    salutation: typing.Optional[str] = None
+    introduction_paragraph: typing.Optional[str] = None
+    teaser_paragraph: typing.Optional[str] = None
+    contribution_paragraph: typing.Optional[str] = None
+    closure_paragraph: typing.Optional[str] = None
 
 class EmploymentRecord(BaseModel):
     employer: typing.Optional[str] = None
@@ -74,6 +90,12 @@ class EmploymentRecordInput(BaseModel):
     property_job_titles: typing.List[str]
     positions: typing.List["JobPosition"]
 
+class Formation(BaseModel):
+    degree: typing.Optional[str] = None
+    institution: typing.Optional[str] = None
+    location: typing.Optional[str] = None
+    specializations: typing.List["Specialization"]
+
 class GoldenCircle(BaseModel):
     why: typing.Optional[str] = None
     how: typing.Optional[str] = None
@@ -83,6 +105,8 @@ class JobPosition(BaseModel):
     title: typing.Optional[str] = None
     description: typing.Optional[str] = None
     responsibilities: typing.List[str]
+    competencies: typing.List[str]
+    technical_proficiencies: typing.List[str]
 
 class JobPosting(BaseModel):
     title: typing.Optional[str] = None
@@ -93,6 +117,7 @@ class JobPosting(BaseModel):
     description: typing.Optional[str] = None
     competencies_and_skills: typing.List["CompetenciesAndSkills"]
     roles: typing.List[str]
+    requirements: typing.List[str]
     recruiter_details: typing.Optional["RecruiterDetails"] = None
     posting_date: typing.Optional[str] = None
     application_deadline: typing.Optional[str] = None
@@ -107,13 +132,18 @@ class LanguageSkills(BaseModel):
 
 class ProfileCoverLetterAndEmail(BaseModel):
     professional_profile: typing.Optional[str] = None
-    cover_letter: typing.Optional[str] = None
     email_body: typing.Optional[str] = None
+    competencies_and_skills: typing.List["CompetencyAndSkills"]
+    cover_letter: typing.Optional["CoverLetter"] = None
 
 class RecruiterDetails(BaseModel):
     name: typing.Optional[str] = None
     email: typing.Optional[str] = None
     phone: typing.Optional[str] = None
+
+class Specialization(BaseModel):
+    focus: typing.Optional[str] = None
+    description: typing.Optional[str] = None
 
 class WritingExample(BaseModel):
     style: typing.Optional[str] = None

@@ -21,47 +21,51 @@ class CompanyBrand {
   customer_segments string[]
   writing_examples WritingExample[]
 }
+class CompetencyAndSkills {
+	competency string @description(#"
+Relevant competency for the job position based on the all the competencies listed in the applicants adapted CV experience across multiple employers.
+"#)
+	skills string[] @description(#"
+A list of relevant skill related to the competency of current competency being analyzed. If the competency is related to soft skill, don't return anything. If the competency is related to hard skill, return a list of relevant hard skills such as programming languages, tools, frameworks, platforms, etc.
+"#)
+}
+
+class CoverLetter {
+	subject_line string @description(#"
+Convey with one look what position you are applying for in one line
+"#)
+	salutation string @description(#"
+The salutation should be formal and address the hiring manager or recruiter by name if possible. If the name is not known, a general greeting such as "Dear Hiring Manager" is acceptable.
+"#)
+	introduction_paragraph string @description(#"
+The introduction should 3 or 4 lines and answer why the applicant is applying for the position and how you became aware of it (through a friend, an employee at the company, a job portal, etc.). Be confident in your word choice. Don’t use insecure words such as ‘I think I would be a good fit’ but rather ‘I am confident that I will contribute to …’
+	"#)
+	teaser_paragraph string @description(#"
+Paragraph of 5 or 6 lines to shine with the applicants skills, experience, and qualifications. Never just list things, but choose the relevant achievements and prove them with results. Don’t only refer to achievements in your work life, but if relevant, also mention efforts with private projects. This will show your personality, drive, and willingness to learn and grow beyond what you get paid for.
+	"#)
+	contribution_paragraph string @description(#"
+Parragraph of 5 or 6 lines after the teaser paragraph where the applicant has showcased themselves, it is time to translate how these experiences and skills will contribute to the role and company. Convey that you have taken the time to research the company by referring to the company culture, possible awards the company has won, or projects that inspire and motivate you. Be authentic and confident.
+	"#)
+	closure_paragraph string @description(#"
+Paragraph of 3 or 4 lines to close the cover letter:º
+- Reemphasize your eagerness to join the company in the relevant position.
+- Describe your future goals and the value you can bring to the company.
+- Emphasize that you’d be happy to answer any questions via phone or in a personal interview.
+"#)
+}
 
 class ProfileCoverLetterAndEmail {
-	professional_profile string @description(#"
-		write the professional profile paragraph (or CV summary) section of a CV to be a brief introduction that outlines the candidates attributes, qualities and work experiences that make them a great fit for the job they are applying for. The profile should be tailored to the specific job description, responsibilities, and required competencies and skills provided. Use a professional tone and ensure the profile is concise, clear, and highlights the most relevant aspects of the candidate's experience and skills. The length should be between 70-100 words.
-	"#)
-cover_letter string @description(#"
-    Write a structured, multi-paragraph cover letter (1 greeting line + 4 body paragraphs) in first person that follows this exact format:
-
-    **Greeting Line:** "Dear [Recruiter Name or Hiring Manager], I am writing to apply for the [Job Title] position."
-
-    **Paragraph 1 - Who I Am & What I Believe In (2-3 sentences):**
-    - Introduce yourself as a professional in your field
-    - Mention your years of experience and key expertise
-    - Connect to the company's mission/vision from their "why" statement
-
-    **Paragraph 2 - Skill & Qualification Match (3 sentences using STAR format):**
-    - Situation/Task: Describe a relevant project or role
-    - Action/Result: Quantify your achievements and technical skills used
-    - Demonstrate expertise in the required technical competencies
-
-    **Paragraph 3 - Why I Want to Work Here (3 sentences):**
-    - Reference the company's mission and how it aligns with your values
-    - Mention their service model or approach that appeals to you
-    - Express enthusiasm for contributing to their specific goals
-
-    **Paragraph 4 - Conclusion & Thank You (3 sentences):**
-    - Summarize why your background makes you a strong candidate
-    - Express interest in discussing your qualifications further
-    - Thank them for their time and consideration
-
-    **Requirements:**
-    - Use first-person voice throughout ("I am," "I have," "I believe")
-    - Reference specific technical competencies and responsibilities from the job description
-    - Incorporate the company's brand voice and mission
-    - Separate paragraphs with exactly one blank line
-    - Length: 200-300 words total
-    - Do not mention language proficiency levels
-    - Use professional, achievement-focused tone with quantified results where possible
-"#)
-	email_body string @description(#"
-		write the body of an email to the hiring manager that introduces the candidate and expresses their interest in the job. The email should be concise and professional, and include a brief overview of the candidate's qualifications. It should also invite the hiring manager to review the attached CV and cover letter. The length should be between 100-150 words.
+  professional_profile string @description(#"
+the purpose of the professional profile is to quickly convey to the hiring manager why the candidate is a strong match for the role and to entice them to read further into the CV. For that you must use the academic formations, and the professional experiences with the higher matching score from the adapted CV and use only the related competencies and skills from the job description to create a compelling summary that aligns with what the employer is looking for. The length should be between 90-120 words.
+  "#)
+  email_body string @description(#"
+    write the body of an email to the hiring manager that introduces the candidate and expresses their interest in the job. The email should be concise and professional, and include a brief overview of the candidate's qualifications. It should also invite the hiring manager to review the attached CV and cover letter. The length should be between 100-150 words.
+  "#)
+	competencies_and_skills CompetencyAndSkills[] @description(#"
+A list of eight top level competencies and skills that are relevant to the job position based on the all the competencies listed in the applicants adapted CV experience across multiple employers, also look into all the competences and skills from the non adapted CV. Include competencies and skills relevant to the job description first but if there are not enough, include other relevant competencies and skills from the adapted CV, giving priority to technical skills. Make sure to include core competencies related to data.
+  "#)
+	cover_letter  CoverLetter @description(#"
+A structured, multi-paragraph cover letter (1 greeting line + 4 body paragraphs) in first person.
 	"#)
 }
 
@@ -69,104 +73,164 @@ class AdaptedPosition {
   title string
   description string
   responsibilities string[]
+	competencies string[]
+	technical_proficiencies string[]
 }
 
 class AdaptedEmployer {
   employer string
   description string
   positions AdaptedPosition
+  matching_score string @description(#"
+The matching score is a number between 1 and 7 in the linkbert scale that indicates how well the candidate's experience aligns with the job requirements. A higher score indicates a better match. Use the following scale to assign the matching score:
+- 1 = Very poor match
+- 2 = Poor match
+- 3 = Fair match
+- 4 = Good match
+- 5 = Very good match
+- 6 = Excellent match
+- 7 = Perfect match
+  "#)
+  matching_reasons string @description(#"
+The matching reasons provides a brief explanation of why the candidate received the assigned matching score.
+"#)
+}
+
+class Specialization {
+  focus string
+  description string
+}
+
+class Formation {
+  degree string
+  institution string
+  location string
+  specializations Specialization[]
 }
 
 // Function to write a professional profile based on job description and adapted CV
 function WriteProfessionalProfile(
-	job_title: string,
-	job_description: string,
-	job_responsibilities: string[],
+  formations: Formation[],
+  job_title: string,
+  job_description: string,
+  job_responsibilities: string[],
+  all_competencies: string[],
+	all_skills: string[],
 	competencies_and_skills: Competency[],
-	adaptedCV: AdaptedEmployer[],
-	company_brand: CompanyBrand,
-	recruiter_name: string) -> ProfileCoverLetterAndEmail {
+  adaptedCV: AdaptedEmployer[],
+  company_brand: CompanyBrand,
+  recruiter_name: string) -> ProfileCoverLetterAndEmail {
 
-  client "openai/gpt-4o"
+  client "openai/gpt-4o-mini"
   prompt #"
     {{ _.role("system") }}
-    You are an expert IT recruiter specializing in data science and AI roles that will redact the supporting content to facilitate the job person selecting the best candidate. Your job is to create the a professional profile for a CV, the cover letter and email based on the provided job description, responsibilities, required competencies and skills, and the candidate's adapted CV experience across multiple employers.
-		Understand the companies brand information including their mission, vision, services, target customer segments, and writing style examples to ensure the cover letter and email align with the company's tone and values.
-		Use a professional and engaging tone that reflects the company's brand voice. Ensure the content is concise
+You are an expert IT recruiter specializing in data science and AI roles that will redact the supporting content to facilitate the job person selecting the best candidate. Your job is to create the a professional profile for a CV, the cover letter and email based on the provided job description, responsibilities, required competencies and skills, and the candidate's adapted CV experience across multiple employers.
 
-    ## Job title: {{ job_title }}
-		### Recruiters name: {{ recruiter_name }}
-    ### Job Description: {{ job_description }}
-    ### Job Responsibilities:
-    {% for responsibility in job_responsibilities %}
-      - {{ responsibility }}
-    {% endfor %}
-    ### Required Job Competencies and Skills:
-    {% for competency in competencies_and_skills %}
-      - Competency: {{ competency.competency }}
-        - Soft Skills:
-          {% for skill in competency.soft_skills %}
-            - {{ skill }}
-          {% endfor %}
-        - Hard Skills:
-          {% for skill in competency.hard_skills %}
-            - {{ skill }}
-          {% endfor %}
-    {% endfor %}
+You must understand the companies brand information including their mission, vision, services, target customer segments, and writing style examples to ensure the cover letter and email align with the company's tone and values.
 
-    ## Company Brand Information:
-    ### Company Mission & Vision:
-    **Why (Purpose):** {{ company_brand.golden_circle.why }}
-    **How (Process):** {{ company_brand.golden_circle.how }}
+Use a professional and engaging tone that reflects the company's brand voice. Ensure the content is concise
 
-    **What (Services):**
-    {% for service in company_brand.golden_circle.what %}
-      - **{{ service.name }}:** {{ service.description }}
-    {% endfor %}
+## Job title: {{ job_title }}
 
-    ### Target Customer Segments:
-    {% for segment in company_brand.customer_segments %}
-      - {{ segment }}
-    {% endfor %}
+### Recruiters name: {{ recruiter_name }}
 
-    ### Company Writing Style Examples:
-    {% for example in company_brand.writing_examples %}
-      - **{{ example.style }} & {{ example.tone }}:** "{{ example.example }}"
-    {% endfor %}
+### Job Description: {{ job_description }}
 
-    **IMPORTANT:** Use the company's writing style and tone as reference for the cover letter. Align the content with their mission, values, and approach to work. Reference their specific services and customer focus where relevant.
+### Job Responsibilities:
+{% for responsibility in job_responsibilities %}
+- {{ responsibility }}
+{% endfor %}
 
-    {{ ctx.output_format }}
+### Required Job Competencies and Skills:
+{% for competency in competencies_and_skills %}
+- Competency: {{ competency.competency }}
+  - Soft Skills:
+  {% for skill in competency.soft_skills %}
+    - {{ skill }}
+  {% endfor %}
+  - Hard Skills:
+  {% for skill in competency.hard_skills %}
+    - {{ skill }}
+  {% endfor %}
+{% endfor %}
 
-    {{ ChainOfThought() }}
+## Company Brand Information:
+### Company Mission & Vision (From Golden Circle):
+- **Why (Purpose):** {{ company_brand.golden_circle.why }}
+- **How (Process):** {{ company_brand.golden_circle.how }}
+- **What (Services):**
+{% for service in company_brand.golden_circle.what %}
+  - **{{ service.name }}:** {{ service.description }}
+{% endfor %}
 
-    {{ _.role("user")}}
-    Here is the candidate's adapted CV experience across multiple employers:
+### Target Customer Segments:
+{% for segment in company_brand.customer_segments %}
+- {{ segment }}
+{% endfor %}
 
-    {% for employer in adaptedCV %}
-    ### {{ employer.employer }}
-    **Company Description:** {{ employer.description }}
+### Company Writing Style Examples:
+{% for example in company_brand.writing_examples %}
+- **{{ example.style }} & {{ example.tone }}:** "{{ example.example }}"
+{% endfor %}
 
-    **Position:**
-    #### {{ employer.positions.title }}
-    - **Description:** {{ employer.positions.description }}
-    - **Key Responsibilities:**
-    {% for responsibility in employer.positions.responsibilities %}
-      - {{ responsibility }}
-    {% endfor %}
+**IMPORTANT:** Use the company's writing style and tone as reference for the cover letter and professional profile. Align the content with their mission, values, and approach to work. Reference their specific services and customer focus where relevant. Avoid using filling words and big fancy phrases that don't communicate much and that dilute the message. When mentioning specific skills or experiences, be sure to provide context and relevance to the job at hand with an specific example of the outcome.
 
-    ---
-    {% endfor %}
+{{ ctx.output_format }}
 
-    Based on this comprehensive work experience and the company brand information, write a professional profile, cover letter, and email that:
-    1. Synthesizes the most relevant skills and experiences that align with the target job requirements
-    2. Incorporates the company's mission, values, and approach
-    3. Uses appropriate tone and style consistent with the company's brand voice
-    4. References specific company services or focus areas where relevant to the candidate's experience
+{{ ChainOfThought() }}
+
+{{ _.role("user")}}
+
+Here is the candidate's adapted CV and the formations of the application so you can understand their experience across multiple employers and write the professional profile, cover letter and email accordingly:
+
+## Job Experiences:
+{% for employer in adaptedCV %}
+### {{ employer.employer }}
+- **Company Description:** {{ employer.description }}
+- **Position:** {{ employer.positions.title }}
+- **Main role:** {{ employer.positions.description }}
+- **Competencies used in this position:**
+{% for competency in employer.positions.competencies%}
+	- {{ competency }}
+{% endfor %}
+- **Technical Proficiencies used in this position:**
+{% for proficiency in employer.positions.technical_proficiencies%}
+	- {{ proficiency }}
+{% endfor %}
+- **Key Responsibilities:**
+  {% for responsibility in employer.positions.responsibilities %}
+  - {{ responsibility }}
+  {% endfor %}
+- **Matching Score:** {{ employer.matching_score }} out of 7 because {{ employer.matching_reasons }}
+---
+{% endfor %}
+
+## Formations:
+{% for formation in formations %}
+### {{ formation.degree }} - {{ formation.institution }} ({{ formation.location }})
+- **Specializations:**
+  {% for specialization in formation.specializations %}
+  - **{{ specialization.focus }}:** {{ specialization.description }}
+  {% endfor %}
+---
+{% endfor %}
+
+## Competencies and Skills from the non adapted CV:
+It might be possible that that not all the competencies and skills from the non adapted CV are represented in the adapted CV experience across multiple employers. Here is a list of all the competencies and skills from the non adapted CV that you can use to complement the professional profile, cover letter and email if needed:
+{% for competency in all_competencies %}
+- {{ competency }}
+{% endfor %}
+{% for skill in all_skills %}
+- {{ skill }}
+{% endfor %}
+Based on this comprehensive work experience and the company brand information, write a professional profile, cover letter, and email that:
+1. Synthesizes the most relevant skills and experiences that align with the target job requirements
+2. Incorporates the company's mission, values, and approach
+3. Uses appropriate tone and style consistent with the company's brand voice
+4. References specific company services or focus areas where relevant to the candidate's experience
 
   "#
 }
-
 
 test job_fit {
   functions [WriteProfessionalProfile]
@@ -220,10 +284,79 @@ test job_fit {
         ]
       }
     ]
+    // ✅ Add formations
+    formations [
+      {
+        "degree": "Master of Science in Cognitive Science",
+        "institution": "University of Osnabrück",
+        "location": "Osnabrück, Germany",
+        "specializations": [
+          {
+            "focus": "Artificial Intelligence",
+            "description": "Focused on probabilistic models, machine learning methods, and computational tools for deriving actionable insights."
+          },
+          {
+            "focus": "Cognitive Psychology",
+            "description": "Specialized in the mechanisms underlying human behavior, with a focus on Human-Computer Interaction (HCI)."
+          }
+        ]
+      },
+      {
+        "degree": "Bachelor of Science in Sound Engineering",
+        "institution": "Universidad de Costa Rica",
+        "location": "San José, Costa Rica",
+        "specializations": [
+          {
+            "focus": "Signal Processing and Acoustics",
+            "description": "Focused on analyzing and modeling audio signals, with a strong mathematical foundation."
+          },
+          {
+            "focus": "Sound Reinforcement and Mixing",
+            "description": "Specialized in designing and operating sound reinforcement systems."
+          }
+        ]
+      }
+    ]
+    // ✅ Add company_brand
+    company_brand {
+      golden_circle {
+        why "To revolutionize data-driven decision making by making advanced analytics accessible to businesses of all sizes"
+        how "Through innovative AI solutions and collaborative partnerships that transform complex data into actionable insights"
+        what [
+          {
+            name "AI-Powered Analytics Platform"
+            description "Scalable data science solutions that integrate seamlessly with existing business processes"
+          },
+          {
+            name "Data Consulting Services"
+            description "Expert guidance for implementing data-driven strategies and best practices"
+          }
+        ]
+      }
+      customer_segments [
+        "Enterprise companies",
+        "Growing startups",
+        "Data-driven organizations"
+      ]
+      writing_examples [
+        {
+          style "Professional"
+          tone "Innovative"
+          example "We believe that every data point tells a story, and our mission is to help organizations discover those stories to drive meaningful change."
+        },
+        {
+          style "Technical"
+          tone "Authoritative"
+          example "Our platform leverages state-of-the-art machine learning algorithms to deliver predictive insights with enterprise-grade reliability."
+        }
+      ]
+    }
     adaptedCV [
       {
         "employer": "Decente Showtec",
         "description": "Decente Showtec is an events production and technical services company in Costa Rica, specializing in professional solutions for concerts, festivals, and large-scale cultural events. The company excels in stage management, sound, lighting, and logistics, ensuring high-quality execution for local and international productions.",
+        "matching_score": "3",
+        "matching_reasons": "The candidate has relevant experience in operations management and project execution, but lacks direct experience in data science and the specific technical skills required for the role.",
         "positions": {
           "title": "Chief of Operations",
           "description": "Managed operations at Decente Showtec, overseeing the coordination of logistics and resources for high-impact event productions, ensuring efficient workflows and quality execution.",
@@ -233,12 +366,26 @@ test job_fit {
             "Collaborated across multidisciplinary teams to innovate production processes and ensure effective execution.",
             "Optimized resource utilization and communication to enhance event interaction and delivery methodologies.",
             "Supervised project execution to maintain high standards of quality and efficiency, addressing challenges for flawless event outcomes."
-          ]
+          ],
+					"competencies": [
+						"Project Management",
+						"Operations Management",
+						"Team Leadership",
+						"Logistics Coordination",
+						"Event Production"
+					],
+					"technical_proficiencies": [
+						"Project Management Software",
+						"Event Management Tools",
+						"Microsoft Office Suite"
+					]
         }
       },
       {
         "employer": "Turri Creadores de Origen",
         "description": "Creadores de Origen is a digital marketplace connecting rural producers in Costa Rica with consumers, focusing on quality, origin, and sustainability, promoting transparent supply chains and meaningful relationships.",
+        "matching_score": "6",
+        "matching_reasons": "The candidate has strong experience in data science, including predictive modeling and statistical analysis, which directly aligns with the job requirements.",
         "positions": {
           "title": "Data Scientist",
           "description": "As a Data Scientist at Turri Creadores de Origen, the role involved utilizing data analysis and predictive modeling to enhance business strategies, customer interactions, and sustainability efforts.",
@@ -247,30 +394,50 @@ test job_fit {
             "Conducted advanced statistical analysis on data from BigQuery to deliver actionable intelligence on customer segmentation and LTV that guided marketing budget allocation.",
             "Collaborated across teams to pioneer a neuro-marketing analytics program, aligning user psychology insights with business strategies to optimize customer interaction and delivery methodologies.",
             "Lead data-driven decision making and project execution by enabling comprehensive business intelligence, providing clean, modeled data for self-service analytics tools."
-          ]
+          ],
+					"competencies": [
+						"Data Science",
+						"Predictive Modeling",
+						"Statistical Analysis",
+						"Data Visualization",
+						"Cross-functional Collaboration"
+					],
+					"technical_proficiencies": [
+						"R",
+						"BigQuery",
+						"SQL",
+						"Data Visualization Tools"
+					]
         }
       }
     ]
-
-    company_brand {
-      golden_circle {
-        why "To empower businesses through data-driven insights and innovative solutions that drive growth and efficiency."
-        how "By leveraging cutting-edge technologies and a customer-centric approach to deliver tailored data science services."
-        what [
-          { name: "Data Analytics", description: "Providing comprehensive data analysis to uncover trends and insights." },
-          { name: "Machine Learning Solutions", description: "Developing predictive models to enhance decision-making processes." },
-          { name: "Business Intelligence", description: "Creating dashboards and reports for real-time business monitoring." }
-        ]
-      }
-      customer_segments [
-        "Small to medium-sized enterprises (SMEs) looking to leverage data for growth",
-        "Large corporations seeking advanced analytics and machine learning solutions",
-        "Startups aiming to build data-driven products and services"
-      ]
-      writing_examples [
-        { style: "Professional", tone: "Formal", example: "We are committed to delivering excellence through innovative solutions that meet our clients' unique needs." },
-        { style: "Conversational", tone: "Friendly", example: "At our core, we believe in the power of data to transform businesses and drive success." }
-      ]
-    }
+		all_competencies [
+			"Data Science",
+			"Predictive Modeling",
+			"Statistical Analysis",
+			"Data Visualization",
+			"Cross-functional Collaboration",
+			"Project Management",
+			"Operations Management",
+			"Team Leadership",
+			"Logistics Coordination",
+			"Event Production"
+		]
+		all_skills [
+			"Python",
+			"PySpark",
+			"Complex SQL Queries",
+			"Machine Learning",
+			"Azure",
+			"Databricks",
+			"Tableau",
+			"R",
+			"BigQuery",
+			"SQL",
+			"Data Visualization Tools",
+			"Project Management Software",
+			"Event Management Tools",
+			"Microsoft Office Suite"
+		]
   }
 }
