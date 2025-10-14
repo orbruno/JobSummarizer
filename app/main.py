@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, UploadFile, File
 import nest_asyncio
 import asyncio
 from crawl4ai import AsyncWebCrawler
@@ -42,6 +42,33 @@ def generate_job_json(request: JobRequest):
             status_code=400, detail=f"Error crawling or extracting: {e}"
         )
     return job_posting
+
+@app.post("/generate-job-json-from-file")
+def generate_job_json_from_file(file: UploadFile = File(...)):
+    """
+    Accepts a PDF file, converts it with Docling, and extracts the job posting.
+    Skips any crawling step.
+    """
+    if file.content_type not in ("application/pdf", "application/octet-stream"):
+        raise HTTPException(status_code=400, detail="Only PDF files are supported.")
+
+    try:
+        # Persist uploaded PDF to a temp file
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+            tmp.write(file.file.read())
+            tmp_path = tmp.name
+
+        # Convert PDF to Markdown with Docling
+        converter = DocumentConverter()
+        result_docling = converter.convert(tmp_path)
+        doc_docling = result_docling.document
+        job_post_md = doc_docling.export_to_markdown()
+
+        # Use the same extractor as URL flow
+        job_posting = b.ExtractJobPosting(job_post_md)
+        return job_posting
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Error processing file: {e}")
 
 
 # Endpoint for AdjustResume
